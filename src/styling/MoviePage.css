@@ -197,6 +197,8 @@
     }
 
     .sidebar {
+      order: -1;
+      margin-top: 30px;
       width: 100%;
     }
 
@@ -207,8 +209,8 @@
     }
 
     .trailer-placeholder {
-      width: 100%;
-      height: 200px;
+      width: 400px;
+      height: 100px;
     }
 
     .watchlist-button {
