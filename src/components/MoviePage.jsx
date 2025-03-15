@@ -90,7 +90,7 @@ const MoviePage = ({ movieName="default", year="default", id }) => {
     return (
         <div className="movie-page">
             <div className="banner-container">
-                <img className="banner-image" src={`https://image.tmdb.org/t/p/original${movie.bannerURL}`}></img>
+                <img className="banner-image" src={`https://image.tmdb.org/t/p/original${movie.bannerURL}`} loading="lazy" alt="banner"></img>
                 <div className="banner-overlay"></div>
             </div>
 
@@ -144,7 +144,7 @@ const MoviePage = ({ movieName="default", year="default", id }) => {
                 </section>
             
                 <div className="sidebar">
-                    <img className="poster" src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt="Poster"></img>
+                    <img className="poster" src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} loading="lazy" alt="Poster"></img>
                     <button className="watchlist-button">Add to watchlist</button>
                 </div>
             </div>

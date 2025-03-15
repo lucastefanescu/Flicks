@@ -5,8 +5,8 @@ import MoviePage from "./components/MoviePage";
 function App() {
 	return (
 		<MoviePage
-            movieName="donnie darko"
-            year="2001"  
+            movieName="batman"
+            year="2022"  
         />
 	  );
 }
