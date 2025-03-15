@@ -1,19 +1,55 @@
-#pylint: skip-file
-from fastapi import APIRouter, Body, HTTPException
+# pylint: skip-file
+import os
+import jwt
+import datetime
+from fastapi import APIRouter, Body, HTTPException, Depends
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from dotenv import load_dotenv
 from models import LoginModel, ForgotPasswordModel, ResetPasswordRequest
 from database import users_collection
 from utils.hashing import verifyPassword, generateResetToken, generateHash
 from utils.emailUtils import sendResetEmail
 
-router = APIRouter()
+# Load environment variables from .env file
+load_dotenv()
+JWT_SECRET = os.getenv("JWT_SECRET")
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+JWT_EXPIRATION_MINUTES = int(os.getenv("JWT_EXPIRATION_MINUTES", "60"))
 
-# Authenticate User
+if not JWT_SECRET:
+    raise ValueError("JWT_SECRET is not set in the environment variables. Please check your .env file.")
+
+router = APIRouter()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
+
+# Function to create a JWT token
+def create_jwt_token(data: dict):
+    expire = datetime.datetime.utcnow() + datetime.timedelta(minutes=JWT_EXPIRATION_MINUTES)
+    to_encode = data.copy()
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+# Authenticate User and Generate JWT
 @router.post("/login")
 async def login(user: LoginModel):
     db_user = await users_collection.find_one({"username": user.username})
     if not db_user or not verifyPassword(user.password, db_user["password"]):
         raise HTTPException(status_code=400, detail="Invalid credentials")
-    return {"message": "Login successful"}
+
+    # Create JWT Token
+    token = create_jwt_token({"sub": db_user["username"], "id": str(db_user["_id"])})
+
+    return {"message": "Login successful", "token": token}
+
+@router.get("/protected")
+async def protected_route(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return {"message": "Access granted", "user": payload}
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 # Forgot Password
 @router.post("/forgot-password")
