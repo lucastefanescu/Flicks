@@ -26,20 +26,8 @@ const FlicksLandingPage = () => {
 				navigate("/SignUp");
 			}
 		},
-		[isLoggedIn, navigate]
 	);
-	const handleLogin = useCallback(() => {
-		setIsLoggedIn(true);
-		alert("You are now logged in!");
-	}, []);
-
-	const handleSignup = useCallback(() => {
-		if (isLoggedIn) {
-			alert("already logged in");
-		} else {
-			alert("Redirecting to signup page...");
-		}
-	}, [isLoggedIn]);
+	
 	return (
 		<div className="frame-2">
 			<MainPageNavBar
@@ -51,12 +39,14 @@ const FlicksLandingPage = () => {
 						<h1 className="flicks-title">FLICKS</h1>
 					</div>
 					<div className="main-button-container">
+						{isLoggedIn && (
 						<button
 							className="main-button"
 							onClick={() => handleLoggedInCheck("search")}
 						>
 							Search
 						</button>
+						)}
 					</div>
 				</div>
 			</main>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styling/ResetPasswordForm.css";
-import logo from "../../styling/flick_logo.png";
+import logo from "../../pictures/flick_logo.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from 'react-hot-toast';
 

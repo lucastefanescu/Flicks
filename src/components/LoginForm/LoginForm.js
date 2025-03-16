@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styling/Loginform.css";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
-import logo from "../../styling/flick_logo.png";
+import logo from "../../pictures/flick_logo.png";
 import { useAuth } from '../AuthContext';
 import toast from 'react-hot-toast';
 

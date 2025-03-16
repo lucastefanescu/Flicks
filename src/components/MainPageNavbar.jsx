@@ -1,5 +1,5 @@
 import "../styling/MainPageNavbar.css";
-import logo from "../styling/flick_logo.png";
+import logo from "../pictures/flick_logo.png";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useAuth } from './AuthContext';
@@ -28,22 +28,11 @@ function MainPageNavBar() {
 	};
 
 	const handleLogin = () => {
-		if (isLoggedIn){
-			toast.error("You are already logged in!");
-		}
-		else{
-			navigate("/Login")
-		}
-		
-		
+			navigate("/Login")			
 	};
 	
 	const handleSignup = () => {
-		if (isLoggedIn) {
-			toast.error("already logged in");
-		} else {
 			navigate("/SignUp")
-		}
 	};
 	return (
 		<div>
@@ -51,20 +40,23 @@ function MainPageNavBar() {
 				<div className="logo-container">
 					<img src={logo} alt="flicks logo" onClick={() => navigate("/")}></img>
 				</div>
-				<div className="nav-buttons">
+				{isLoggedIn && (<div className="nav-buttons">
 					<button
 						className="nav-button home-button"
-						onClick={() => handleLoggedInCheck("profile")}
-					>
+						onClick={() => handleLoggedInCheck("profile")}>
 						Profile
 					</button>
-					<button className="nav-button about-button" onClick={handleSignup}>
-						Sign Up
-					</button>
-					<button className="nav-button login-button" onClick={handleLogin}>
-						Login
-					</button>
 				</div>
+				)}
+				{!isLoggedIn && (<div className="nav-buttons">
+						<button className="nav-button about-button" onClick={handleSignup}>
+							Sign Up
+						</button>
+						<button className="nav-button login-button" onClick={handleLogin}>
+							Login
+						</button>
+					</div>
+				)}
 			</nav>
 		</div>
 	);

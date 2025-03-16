@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../styling/ForgotPasswordForm.css";
 import { MdEmail } from "react-icons/md";
-import logo from "../../styling/flick_logo.png";
+import logo from "../../pictures/flick_logo.png";
 import toast from 'react-hot-toast';
 
 
