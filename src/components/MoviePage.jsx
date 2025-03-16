@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 import "../styling/MoviePage.css";
 import StarRate from "./StarRate";
 import { useEffect, useState } from "react";
@@ -5,9 +7,12 @@ import { useEffect, useState } from "react";
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
 // must be called with either movie name AND year, OR using the movie's id
-const MoviePage = ({ movieName="default", year="default", id }) => {
+const MoviePage = ({ movieName="default", year="default" }) => {
     const [movie, setMovie] = useState(null);
     const [error, setError] = useState(null);
+    const { id } = useParams();
+    const { user_id } = useAuth();
+
 
     useEffect(() => {
         console.log("useEffect triggered with:", movieName, year);
