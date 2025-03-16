@@ -4,16 +4,15 @@
 
 	justify-content: space-between;
 	align-items: center;
-	padding: 0.5em 0 0.5em 0;
+	padding: 0.5em 0;
 }
 .nav-button {
 	border-radius: 30px;
-
 	padding: 0.78em 1.5em;
 	margin-right: 2.06em;
 }
 .logo-container > img {
-	height: 50px;
+	height: 57px;
 	margin-left: 0.5em;
 	padding: 0.25em;
 }
@@ -27,10 +26,36 @@
 	background: #0a1a2f;
 	color: #f5f5f5;
 	border: 1px solid #ffd700;
+	font-family: Roboto;
 }
 .nav-button:hover {
 	cursor: pointer;
 	color: #ffd700;
 }
+.nav-button {
+	text-decoration: none;
+}
 @media (max-width: 768px) {
+	.nav-container {
+		min-height: 30vh;
+		flex-direction: column;
+		justify-content: center;
+	}
+	.logo-container > img {
+		margin: 0.25em 0;
+		padding: 0;
+	}
+	.nav-buttons {
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.nav-button,
+	.nav-button-all {
+		margin: 0.75em 0;
+	}
+	.logo-container {
+		margin: 0;
+	}
 }

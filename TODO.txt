@@ -1,0 +1,1 @@
+lazy load images, write media queries, integrate login system, integrate reccomender system, build profile component

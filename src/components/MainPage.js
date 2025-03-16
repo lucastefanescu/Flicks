@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import "../styling/MainPage.css";
 import MainPageNavBar from "./MainPageNavbar";
-import logo from "../styling/flick_logo.png";
+import logo from "../pictures/flick_logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from './AuthContext';
 
@@ -9,23 +9,37 @@ const FlicksLandingPage = () => {
 	const {isLoggedIn} = useAuth();
 	const navigate = useNavigate();
 
-	const handleLoggedInCheck = (scenario) => {
-		if (isLoggedIn) {
-			switch (scenario) {
-				case "search":
-					navigate("/Search")
-					break;
-				case "profile":
-					navigate("/Profile")
-				default:
-					console.log("error");
+	const handleLoggedInCheck = useCallback(
+		(scenario) => {
+			if (isLoggedIn) {
+				switch (scenario) {
+					case "search":
+						navigate("/Search");
+						break;
+					case "profile":
+						navigate("/Search");
+						break;
+					default:
+						navigate("/SignUp");
+				}
+			} else {
+				navigate("/SignUp");
 			}
-		} 
-		else {
-			navigate("/SignUp");
+		},
+		[isLoggedIn, navigate]
+	);
+	const handleLogin = useCallback(() => {
+		setIsLoggedIn(true);
+		alert("You are now logged in!");
+	}, []);
+
+	const handleSignup = useCallback(() => {
+		if (isLoggedIn) {
+			alert("already logged in");
+		} else {
+			alert("Redirecting to signup page...");
 		}
-	};
-	
+	}, [isLoggedIn]);
 	return (
 		<div className="frame-2">
 			<MainPageNavBar

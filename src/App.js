@@ -9,6 +9,7 @@ import ProfilePage from "./components/ProfilePage.jsx"
 import MovieCard from "./components/MovieCard.jsx";
 import { AuthProvider } from './components/AuthContext.jsx';
 import SearchPage from "./components/SearchPage.jsx";
+
 function App() {
 	return (
 		
@@ -19,17 +20,16 @@ function App() {
 				<Route path="/SignUp" element={<SignupForm />} />
 				<Route path="/Login" element={<LoginForm />} />
 				<Route path="/ForgotPassword" element={<ForgotPasswordForm />} />
-				<Route path="/Profile" element={<ProfilePage/>} />
-				<Route path="/Search" element= {<SearchPage/>} />
+
+				<Route path="/Search" element={<SearchPage />} />
+				<Route
+					path="/Search/:id"
+					element={<MoviePage movieName="default" year="default" />}
+				/>
 			</Routes>
 			</AuthProvider>
 
 		</Router>
-		
-		//<MovieCard/>
-		//<MoviePage/>
-		//<ProfilePage/>
-		 
 	);
 }
 

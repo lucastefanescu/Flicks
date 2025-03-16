@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styling/ForgotPasswordForm.css";
 import { MdEmail } from "react-icons/md";
-import logo from "../../styling/flick_logo.png";
+import logo from "../../pictures/flick_logo.png";
 
 const ForgotPasswordForm = () => {
 	return (

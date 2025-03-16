@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styling/SignupForm.css";
-import logo from "../../styling/flick_logo.png";
+import logo from "../../pictures/flick_logo.png";
 
 const Signupform = () => {
 	const navigate = useNavigate(); // Initialize navigate function

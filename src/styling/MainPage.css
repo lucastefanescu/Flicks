@@ -50,3 +50,8 @@
 	color: #1c1c1c;
 	cursor: pointer;
 }
+@media (max-width: 768px){
+	.content-container{
+		min-height: 70vh;
+	}
+}
