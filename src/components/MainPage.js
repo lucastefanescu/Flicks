@@ -3,10 +3,12 @@ import "../styling/MainPage.css";
 import MainPageNavBar from "./MainPageNavbar";
 import logo from "../pictures/flick_logo.png";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from './AuthContext';
 
 const FlicksLandingPage = () => {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const {isLoggedIn} = useAuth();
 	const navigate = useNavigate();
+
 
 	const handleLoggedInCheck = useCallback(
 		(scenario) => {
@@ -39,12 +41,10 @@ const FlicksLandingPage = () => {
 			alert("Redirecting to signup page...");
 		}
 	}, [isLoggedIn]);
+
 	return (
 		<div className="frame-2">
 			<MainPageNavBar
-				handleLoggedInCheck={handleLoggedInCheck}
-				handleLogin={handleLogin}
-				handleSignup={handleSignup}
 			/>
 			<main className="content-container">
 				<div className="logo-title-container">

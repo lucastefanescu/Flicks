@@ -1,28 +1,62 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../../styling/ForgotPasswordForm.css";
 import { MdEmail } from "react-icons/md";
-import logo from "../../pictures/flick_logo.png";
+import logo from "../../styling/flick_logo.png";
+import toast from 'react-hot-toast';
+
 
 const ForgotPasswordForm = () => {
-	return (
-		<div className="logincontainer forgotpassword-container">
-			<div className="loginwrapper forgot-wrapper">
-				<form>
-					<img src={logo} alt="App Logo" width="100" />
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
-					<h1 className="loginformtitle forgotpassword">Forgot Password</h1>
+    const handleForgotPassword = async (e) => {
+        e.preventDefault();
+        setMessage("");
+        setLoading(true);
 
-					<div className="input-box">
-						<input type="text" placeholder="Email" required />
-						<MdEmail className="icon" />
-					</div>
+        try {
+            const response = await axios.post("http://127.0.0.1:8030/auth/forgot-password", { email });
 
-					<button type="submit">Send Email</button>
-				</form>
-			</div>
-		</div>
-	);
+            if (response.status === 200) {
+                toast.sucess("Password reset link has been sent to your email.");
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.detail || "Error sending reset email.");
+            console.error("Forgot Password Error:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="forgotpassword-container">
+            <div className="forgot-wrapper">
+                <form onSubmit={handleForgotPassword}>
+                    <img src={logo} alt="App Logo" width="100" />
+                    <h1 className="forgotpassword">Forgot Password</h1>
+
+                    {message && <p className="message message-top">{message}</p>}
+
+                    <div className="input-box">
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <MdEmail className="icon" />
+                    </div>
+
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Sending..." : "Send Email"}
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
 };
 
 export default ForgotPasswordForm;

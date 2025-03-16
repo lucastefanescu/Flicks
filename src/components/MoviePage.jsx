@@ -186,3 +186,4 @@ const MoviePage = ({ movieName = "default", year = "default" }) => {
 };
 
 export default MoviePage;
+
