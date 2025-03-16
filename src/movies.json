@@ -1,0 +1,7 @@
+[
+  { "id": 1, "title": "Avengers", "image": "/images/avengers.jpg" },
+  { "id": 2, "title": "Inception", "image": "/images/inception.jpg" },
+  { "id": 3, "title": "The Dark Knight", "image": "/images/dark-knight.jpg" },
+  { "id": 4, "title": "Parasite", "image": "/images/parasite.jpg" },
+  { "id": 5, "title": "Deadpool Wolverine", "image": "/images/deadpool.jpg" }
+]
