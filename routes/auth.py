@@ -39,7 +39,7 @@ async def login(user: LoginModel):
     # Create JWT Token
     token = create_jwt_token({"sub": db_user["username"], "id": str(db_user["_id"])})
 
-    return {"message": "Login successful", "token": token}
+    return {"message": "Login successful", "token": token, "user_id": str(db_user["_id"])}
 
 @router.get("/protected")
 async def protected_route(token: str = Depends(oauth2_scheme)):
