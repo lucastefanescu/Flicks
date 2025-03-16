@@ -1,7 +1,7 @@
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import React, { useState } from "react"
 
-export default function StarRate() {
+export default function StarRate({ onRatingSelected = () => {} }) {
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);
 
@@ -12,25 +12,13 @@ export default function StarRate() {
         setHover(isHalf ? index + 0.5 : index + 1);
     };
 
-    const handleRatingClick = async (selectedRating) => {
-        setRating(selectedRating); // Save rating locally
-
-        try {
-            const response = await fetch("http://127.0.0.1:8000/rate", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-
-                body: JSON.stringify({ rating: selectedRating }),
-            });
-
-            const data = await response.json();
-            console.log("Rating saved:", data);
-        } catch (error) {
-            console.error("Error saving rating:", error);
+    const handleRatingClick = (selectedRating) => {
+        setRating(selectedRating);
+        if (onRatingSelected) {
+            onRatingSelected(selectedRating);
         }
     };
+
 
     return (
         <div style={{ display: "flex", gap: "5px" }}>

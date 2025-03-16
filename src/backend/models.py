@@ -1,11 +1,19 @@
 #pylint: skip-file
-from typing import Optional, List
+from typing import Optional, List, Dict
 from pydantic import BaseModel, Field, EmailStr
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
 
 # ObjectId Handling
 PyObjectId = Annotated[str, BeforeValidator(str)]
+
+class RatingModel(BaseModel):
+    userId: int
+    movieId: int
+    rating: float
+    title: str
+    year: str
+    genres: Dict[str, str]
 
 # Model for user signup
 class UserModel(BaseModel):
@@ -15,6 +23,8 @@ class UserModel(BaseModel):
     email: EmailStr = Field(...)
     username: str = Field(...)
     password: str = Field(...)
+
+    ratings: Optional[List[RatingModel]] = []
 
 # Model for user login
 class LoginModel(BaseModel):

@@ -3,6 +3,7 @@ import { useAuth } from "./AuthContext";
 import "../styling/MoviePage.css";
 import StarRate from "./StarRate";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
@@ -12,6 +13,7 @@ const MoviePage = ({ movieName="default", year="default" }) => {
     const [error, setError] = useState(null);
     const { id } = useParams();
     const { user_id } = useAuth();
+    const [rating, setRating] = useState(null);
 
 
     useEffect(() => {
@@ -91,6 +93,29 @@ const MoviePage = ({ movieName="default", year="default" }) => {
     if (error) return <p>{error}</p>;
     if (!movie) return <p>Loading...</p>;
 
+    const handleRatingSubmit = (newRating) => {
+        setRating(newRating);
+
+        sendRatingToBackend(newRating);
+    };
+
+    const sendRatingToBackend = async (newRating) => {
+        try {
+            const ratingData = {
+                movieId: id, 
+                rating: newRating,
+                title: movie.title, 
+                year: movie.releaseYear, 
+                genres: movie.genres
+            };
+
+            const response = await axios.post(`http://localhost:3000/users/${user_id}/ratings`, ratingData);
+            console.log('Rating submitted successfully:', response.data);
+        } catch (error) {
+            console.error('Failed to submit rating:', error);
+        }
+    };
+
 
     return (
         <div className="movie-page">
@@ -122,7 +147,7 @@ const MoviePage = ({ movieName="default", year="default" }) => {
 
                     <section className="rating">
                         <h3>Rate</h3>
-                        <StarRate />
+                        <StarRate onRatingSelected={handleRatingSubmit} />
                     </section>
 
                     <section className="cast">

@@ -1,7 +1,7 @@
 #pylint: skip-file
 from fastapi import APIRouter, Body, HTTPException, status
-from models import UserModel
-from database import users_collection
+from backend.models import UserModel, RatingModel
+from backend.database import users_collection
 from utils.hashing import generateHash
 from typing import List
 
@@ -34,3 +34,40 @@ async def showUser(username: str):
     if user:
         return user
     raise HTTPException(status_code=404, detail=f"User {username} not found")
+
+#get user by ID
+@router.get("/{user_id}", response_model=UserModel)
+async def showUser(user_id: str):
+    user = await users_collection.find_one({"_id": user_id})
+    if user:
+        return user
+    raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found")
+
+# add rating for a user by their user ID
+@router.post("/{user_id}/ratings", response_model=UserModel)
+async def addRating(user_id: str, rating: RatingModel):
+    user = await users_collection.find_one({"_id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found")
+    
+    if "ratings" not in user:
+        user["ratings"] = []
+    
+    user["ratings"].append(rating.dict()) 
+
+    await users_collection.update_one(
+        {"_id": user["_id"]},
+        {"$set": {"ratings": user["ratings"]}}
+    )
+
+    updated_user_data = await users_collection.find_one({"_id": user["_id"]})
+    return updated_user_data
+
+# Get ratings for a user by their user ID
+@router.get("/{user_id}/ratings", response_model=List[RatingModel])
+async def getRatings(user_id: str):
+    user = await users_collection.find_one({"_id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found")
+    
+    return user.get("ratings", [])
