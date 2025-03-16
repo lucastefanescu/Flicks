@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styling/SignupForm.css";
-import logo from "../../styling/flick_logo.png";
+import logo from "../../pictures/flick_logo.png";
 import toast from 'react-hot-toast';
 
 
@@ -23,7 +23,7 @@ const SignupForm = () => {
         setLoading(true);
 
         try {
-            await axios.post("http://127.0.0.1:8030/users/signup", {
+            await axios.post("http://localhost:3000/users/signup", {
                 firstName,
                 lastName,
                 email,

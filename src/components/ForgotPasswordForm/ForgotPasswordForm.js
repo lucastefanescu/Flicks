@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../styling/ForgotPasswordForm.css";
 import { MdEmail } from "react-icons/md";
-import logo from "../../styling/flick_logo.png";
+import logo from "../../pictures/flick_logo.png";
 import toast from 'react-hot-toast';
+
 
 
 const ForgotPasswordForm = () => {
@@ -17,7 +18,7 @@ const ForgotPasswordForm = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post("http://127.0.0.1:8030/auth/forgot-password", { email });
+            const response = await axios.post("http://localhost:3000/auth/forgot-password", { email });
 
             if (response.status === 200) {
                 toast.sucess("Password reset link has been sent to your email.");

@@ -10,37 +10,24 @@ const FlicksLandingPage = () => {
 	const navigate = useNavigate();
 
 
-	const handleLoggedInCheck = useCallback(
-		(scenario) => {
-			if (isLoggedIn) {
-				switch (scenario) {
-					case "search":
-						navigate("/Search");
-						break;
-					case "profile":
-						navigate("/Search");
-						break;
-					default:
-						navigate("/SignUp");
-				}
-			} else {
-				navigate("/SignUp");
-			}
-		},
-		[isLoggedIn, navigate]
-	);
-	const handleLogin = useCallback(() => {
-		setIsLoggedIn(true);
-		alert("You are now logged in!");
-	}, []);
-
-	const handleSignup = useCallback(() => {
+	const handleLoggedInCheck = (scenario) => {
 		if (isLoggedIn) {
-			alert("already logged in");
-		} else {
-			alert("Redirecting to signup page...");
+			switch (scenario) {
+				case "search":
+					navigate("/Search")
+					break;
+				case "profile":
+					navigate("/Profile")
+				default:
+					console.log("error");
+			}
+		} 
+		else {
+			navigate("/SignUp");
 		}
-	}, [isLoggedIn]);
+	};
+
+	
 
 	return (
 		<div className="frame-2">

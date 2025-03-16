@@ -1,5 +1,5 @@
 import "../styling/MainPageNavbar.css";
-import logo from "../styling/flick_logo.png";
+import logo from "../pictures/flick_logo.png";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { useAuth } from './AuthContext';

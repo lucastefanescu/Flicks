@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
+    const [user_id, setUserId] = useState(localStorage.getItem('user_id'));
 
     useEffect(() => {
         const verifyToken = async () => {
@@ -24,14 +25,17 @@ export const AuthProvider = ({ children }) => {
         verifyToken();
     }, [token]);
 
-    const login = (newToken) => {
+    const login = (newToken,user_id) => {
         localStorage.setItem('token', newToken);
+        localStorage.setItem('user_id', user_id);
+        setUserId(user_id);
         setToken(newToken);
         setIsLoggedIn(true);
     };
 
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user_id');
         setToken(null);
         setIsLoggedIn(false);
     };

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styling/Loginform.css";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
-import logo from "../../styling/flick_logo.png";
+import logo from "../../pictures/flick_logo.png";
 import { useAuth } from '../AuthContext';
 import toast from 'react-hot-toast';
 
@@ -30,7 +30,7 @@ const LoginForm = () => {
 		try {
 			console.log("🔍 Attempting login with:", { username, password });
 	
-			const response = await axios.post("http://127.0.0.1:8000/auth/login", {
+			const response = await axios.post("http://localhost:3000/auth/login", {
 				username,
 				password,
 			});
@@ -39,8 +39,9 @@ const LoginForm = () => {
 	
 			// Extract token correctly
 			const token = response.data.token;
+			const user_id = response.data.user_id;
 			if (token) {
-				login(token);
+				login(token,user_id);
 				toast.success("Login successful!");
 				navigate("/");
 			} else {
