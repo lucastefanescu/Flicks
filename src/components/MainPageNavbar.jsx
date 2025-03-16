@@ -1,11 +1,12 @@
 import "../styling/MainPageNavbar.css";
 import logo from "../styling/flick_logo.png";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React from "react";
 import { useAuth } from './AuthContext';
+import toast from 'react-hot-toast';
+
 
 function MainPageNavBar() {
-	const { setIsLoggedIn } = useAuth();
 	const {isLoggedIn} = useAuth();
 	const navigate = useNavigate();
 	
@@ -28,7 +29,7 @@ function MainPageNavBar() {
 
 	const handleLogin = () => {
 		if (isLoggedIn){
-			alert("You are now logged in!");
+			toast.error("You are already logged in!");
 		}
 		else{
 			navigate("/Login")
@@ -39,13 +40,13 @@ function MainPageNavBar() {
 	
 	const handleSignup = () => {
 		if (isLoggedIn) {
-			alert("already logged in");
+			toast.error("already logged in");
 		} else {
 			navigate("/SignUp")
 		}
 	};
 	return (
-		<>
+		<div>
 			<nav className="nav-container">
 				<div className="logo-container">
 					<img src={logo} alt="flicks logo" onClick={() => navigate("/")}></img>
@@ -65,7 +66,7 @@ function MainPageNavBar() {
 					</button>
 				</div>
 			</nav>
-		</>
+		</div>
 	);
 }
 

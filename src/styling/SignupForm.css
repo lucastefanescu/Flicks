@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
-.logincontainer {
+.login-container {
 	min-height: 100vh;
 	display: flex;
 	justify-content: center;
@@ -140,4 +140,11 @@
 }
 .login-text:hover {
 	text-decoration: underline;
+}
+.message-top {
+    color: #fffefe; /* Red for errors */
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px; /* Space between message and input fields */
+    font-weight: bold;
 }
