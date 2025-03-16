@@ -6,11 +6,11 @@ import secrets
 def generateHash(password: str) -> str:
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode("utf-8"), salt)
-    return hashed_password
+    return hashed_password.decode("utf-8")  
 
 #Used by /login
 def verifyPassword(entered_password: str, database_password: str) -> bool:
-    return bcrypt.checkpw(entered_password.encode("utf-8"), database_password)
+    return bcrypt.checkpw(entered_password.encode("utf-8"), database_password.encode("utf-8"))
 
 #Used by /forgot-password
 def generateResetToken() -> str:
