@@ -7,6 +7,25 @@ from typing import List
 
 router = APIRouter()
 
+ALL_GENRES = ["Action",
+"Adventure",
+"Animation",
+"Children's",
+"Comedy",
+"Crime",
+"Documentary",
+"Drama",
+"Fantasy",
+"Film-Noir",
+"Horror",
+"Musical",
+"Mystery",
+"Romance",
+"Sci-Fi",
+"Thriller",
+"War",
+"Western"]
+
 # Add user
 @router.post("/signup", response_model=UserModel, status_code=status.HTTP_201_CREATED)
 async def createUser(user: UserModel = Body(...)):
@@ -53,7 +72,13 @@ async def addRating(user_id: str, rating: RatingModel):
     if "ratings" not in user:
         user["ratings"] = []
     
-    user["ratings"].append(rating.dict()) 
+    genre_dict = {genre: 1 if genre in rating.genres else 0 for genre in ALL_GENRES}
+    rating_dict = rating.model_dump() 
+    rating_dict["genres"] = genre_dict
+    rating_dict["userId"] = user_id
+
+    user["ratings"].append(rating_dict)
+
 
     await users_collection.update_one(
         {"_id": user["_id"]},
