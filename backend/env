@@ -1,0 +1,6 @@
+MONGODB_URL=mongodb+srv://Harshil:group5@flicks.xch4i.mongodb.net/flicks?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true
+GMAIL_USERNAME=eecs4314group5@gmail.com
+GMAIL_APP_PASSWORD=obqcnlwnxjkegmrw
+JWT_SECRET=ead7baf027b3200e05b84f740a5b5d00d04513965578da7cd70f538e636c20dd28fc3851f8f5a1a6b57d6734e507d3b87f2b8c722a874b2bc776e09a1fbf710f
+JWT_ALGORITHM=HS256
+JWT_EXPIRATION_MINUTES=60
