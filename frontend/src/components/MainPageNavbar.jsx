@@ -2,19 +2,18 @@ import "../styling/MainPageNavbar.css";
 import logo from "../pictures/flick_logo.png";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { useAuth } from './AuthContext';
-import toast from 'react-hot-toast';
-
+import { useAuth } from "./AuthContext";
+import toast from "react-hot-toast";
 
 function MainPageNavBar() {
-	const {isLoggedIn} = useAuth();
+	const { isLoggedIn } = useAuth();
 	const navigate = useNavigate();
-	
+
 	const handleLoggedInCheck = (scenario) => {
 		if (isLoggedIn) {
 			switch (scenario) {
 				case "search":
-					navigate("/Search")
+					navigate("/Search");
 					break;
 				case "profile":
 					navigate("/Profile");
@@ -28,11 +27,19 @@ function MainPageNavBar() {
 	};
 
 	const handleLogin = () => {
-			navigate("/Login")			
+		if (isLoggedIn) {
+			toast.error("You are already logged in!");
+		} else {
+			navigate("/Login");
+		}
 	};
-	
+
 	const handleSignup = () => {
-			navigate("/SignUp")
+		if (isLoggedIn) {
+			toast.error("already logged in");
+		} else {
+			navigate("/SignUp");
+		}
 	};
 	return (
 		<div>
@@ -40,23 +47,20 @@ function MainPageNavBar() {
 				<div className="logo-container">
 					<img src={logo} alt="flicks logo" onClick={() => navigate("/")}></img>
 				</div>
-				{isLoggedIn && (<div className="nav-buttons">
+				<div className="nav-buttons">
 					<button
 						className="nav-button home-button"
-						onClick={() => handleLoggedInCheck("profile")}>
+						onClick={() => handleLoggedInCheck("profile")}
+					>
 						Profile
 					</button>
+					<button className="nav-button about-button" onClick={handleSignup}>
+						Sign Up
+					</button>
+					<button className="nav-button login-button" onClick={handleLogin}>
+						Login
+					</button>
 				</div>
-				)}
-				{!isLoggedIn && (<div className="nav-buttons">
-						<button className="nav-button about-button" onClick={handleSignup}>
-							Sign Up
-						</button>
-						<button className="nav-button login-button" onClick={handleLogin}>
-							Login
-						</button>
-					</div>
-				)}
 			</nav>
 		</div>
 	);

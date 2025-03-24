@@ -3,35 +3,32 @@ import "../styling/MainPage.css";
 import MainPageNavBar from "./MainPageNavbar";
 import logo from "../pictures/flick_logo.png";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from './AuthContext';
+import { useAuth } from "./AuthContext";
 
 const FlicksLandingPage = () => {
-	const {isLoggedIn} = useAuth();
+	const { isLoggedIn } = useAuth();
 	const navigate = useNavigate();
 
-	const handleLoggedInCheck = useCallback(
-		(scenario) => {
-			if (isLoggedIn) {
-				switch (scenario) {
-					case "search":
-						navigate("/Search");
-						break;
-					case "profile":
-						navigate("/Search");
-						break;
-					default:
-						navigate("/SignUp");
-				}
-			} else {
-				navigate("/SignUp");
+	const handleLoggedInCheck = useCallback((scenario) => {
+		if (isLoggedIn) {
+			switch (scenario) {
+				case "search":
+					navigate("/Search");
+					break;
+				case "profile":
+					navigate("/Search");
+					break;
+				default:
+					navigate("/SignUp");
 			}
-		},
-	);
-	
+		} else {
+			navigate("/SignUp");
+		}
+	});
+
 	return (
 		<div className="frame-2">
-			<MainPageNavBar
-			/>
+			<MainPageNavBar />
 			<main className="content-container">
 				<div className="logo-title-container">
 					<div className="logo-title-row">
@@ -39,14 +36,12 @@ const FlicksLandingPage = () => {
 						<h1 className="flicks-title">FLICKS</h1>
 					</div>
 					<div className="main-button-container">
-						{isLoggedIn && (
 						<button
 							className="main-button"
 							onClick={() => handleLoggedInCheck("search")}
 						>
 							Search
 						</button>
-						)}
 					</div>
 				</div>
 			</main>

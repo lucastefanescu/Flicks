@@ -4,9 +4,8 @@ import axios from "axios";
 import "../../styling/Loginform.css";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
 import logo from "../../pictures/flick_logo.png";
-import { useAuth } from '../AuthContext';
-import toast from 'react-hot-toast';
-
+import { useAuth } from "../AuthContext";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
 	const navigate = useNavigate();
@@ -15,8 +14,7 @@ const LoginForm = () => {
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
-	const { login} = useAuth();
-
+	const { login } = useAuth();
 
 	const togglePasswordVisibility = () => {
 		setPasswordVisible(!passwordVisible);
@@ -26,17 +24,17 @@ const LoginForm = () => {
 		e.preventDefault();
 		setLoading(true);
 		toast.dismiss(); // Clear any previous toasts
-	
+
 		try {
 			console.log("🔍 Attempting login with:", { username, password });
-	
+
 			const response = await axios.post("http://127.0.0.1:8000/auth/login", {
 				username,
 				password,
 			});
-	
+
 			console.log("✅ API Response:", response.data); // Debugging API response
-	
+
 			// Extract token correctly
 			const token = response.data.token;
 			if (token) {
@@ -49,7 +47,7 @@ const LoginForm = () => {
 		} catch (error) {
 			console.error("❌ Login Error Response:", error.response);
 			console.error("⚠️ Full Error:", error);
-	
+
 			if (error.response) {
 				toast.error(error.response.data.detail || "Invalid login credentials.");
 			} else {
@@ -59,7 +57,7 @@ const LoginForm = () => {
 			setLoading(false);
 		}
 	};
-	
+
 	return (
 		<div className="logincontainer login-container">
 			<div className="loginwrapper login-wrapper">
@@ -93,8 +91,6 @@ const LoginForm = () => {
 						</span>
 					</div>
 
-					
-
 					<div className="logintext remember-forgot">
 						<label>
 							<input type="checkbox" /> Remember me
@@ -116,7 +112,10 @@ const LoginForm = () => {
 					<div className="loginlink signup-link">
 						<p>
 							Don't have an account?
-							<span className="logintext signup-text" onClick={() => navigate("/signup")}>
+							<span
+								className="logintext signup-text"
+								onClick={() => navigate("/signup")}
+							>
 								Sign Up
 							</span>
 						</p>
