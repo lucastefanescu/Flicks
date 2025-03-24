@@ -10,6 +10,7 @@ const FlicksLandingPage = () => {
 	const navigate = useNavigate();
 
 	const handleLoggedInCheck = useCallback((scenario) => {
+
 		if (isLoggedIn) {
 			switch (scenario) {
 				case "search":

@@ -23,9 +23,13 @@
     "react": "^19.0.0",
 
     "react-dom": "^19.0.0",
+<<<<<<< HEAD
 
     "react-hot-toast": "^2.5.2",
 
+=======
+    "react-hot-toast": "^2.5.2",
+>>>>>>> origin/armaan-UI2
     "react-icons": "^5.5.0",
 
     "react-router": "^7.3.0",
@@ -88,5 +92,10 @@
 
   }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/armaan-UI2
 }
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import os
 import faiss
 from backend import globals
@@ -5,6 +6,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from motor.motor_asyncio import AsyncIOMotorClient
 from backend import recommendersystem
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import numpy as np
 import json
@@ -16,6 +18,22 @@ database = client[]
 recommendation_collection = database[]
 
 INDEX_PATH = "./faiss.index"
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],
+)
+
+class Rating(BaseModel):
+    rating: float
+
+@app.post("/rate")
+async def receive_rating(rating: Rating):
+    print(f"Received rating: {rating.rating}")
+    return {"message": "Rating received", "rating": rating.rating}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
