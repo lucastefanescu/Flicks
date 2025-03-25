@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import os
 import faiss
 from backend import globals
