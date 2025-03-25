@@ -9,4 +9,4 @@ if not MONGODB_URL:
 
 client = AsyncIOMotorClient(MONGODB_URL)
 db = client["flicks"]  # Selects the user-advanced cluster
-users_collection = db["users"]  # Selects Users collection, creates it if it doesn't exist
+recommendation_collection = db["users"]  # Selects Users collection, creates it if it doesn't exist

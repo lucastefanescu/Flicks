@@ -10,29 +10,16 @@ from contextlib import asynccontextmanager
 import numpy as np
 import json
 
-connection_string = ""
+MONGODB_URL = os.getenv("MONGODB_URL")
 
-client = AsyncIOMotorClient(connection_string)
-database = client[]
-recommendation_collection = database[]
+client = AsyncIOMotorClient(MONGODB_URL)
+database = client["flicks"]
+recommendation_collection = database["users"]
 
 INDEX_PATH = "./faiss.index"
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_credentials=True,
-    allow_methods=["*"],  
-    allow_headers=["*"],
-)
-
 class Rating(BaseModel):
     rating: float
-
-@app.post("/rate")
-async def receive_rating(rating: Rating):
-    print(f"Received rating: {rating.rating}")
-    return {"message": "Rating received", "rating": rating.rating}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -50,6 +37,11 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+
+@app.post("/rate")
+async def receive_rating(rating: Rating):
+    print(f"Received rating: {rating.rating}")
+    return {"message": "Rating received", "rating": rating.rating}
 
 async def getAllVectors():
     movie_dict = {}
@@ -70,3 +62,11 @@ def build_faiss_index(np_vectors):
 
 
 app.include_router(recommendersystem.router, prefix="/preferenceModal")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://refactored-parakeet-g7779xv95v9fwrrg-3000.app.github.dev"],
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],
+)
