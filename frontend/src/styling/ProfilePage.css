@@ -1,9 +1,7 @@
 .main {
     background: #1C1C1C;
-    
   }
   
- 
 .welcome_text {
   font-family: 'Bebas Neue', sans-serif;
   font-weight: 400;
@@ -55,3 +53,26 @@
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
 }
+=======
+
+@media (max-width: 768px) {
+    .main {
+      padding: 1rem;
+    }
+    
+    .welcome_text {
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .movie_container {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .movie_container {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+  }

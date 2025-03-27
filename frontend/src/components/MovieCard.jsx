@@ -9,5 +9,4 @@ function MovieCard({ title, image }) {
     </div>
   );
 }
-
 export default MovieCard;

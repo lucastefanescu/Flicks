@@ -47,7 +47,6 @@ const LoginForm = () => {
 		} catch (error) {
 			console.error("❌ Login Error Response:", error.response);
 			console.error("⚠️ Full Error:", error);
-
 			if (error.response) {
 				toast.error(error.response.data.detail || "Invalid login credentials.");
 			} else {

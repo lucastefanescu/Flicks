@@ -1,162 +1,237 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+body {
+	background-color: #1c1c1c;
+}
 
-  
-  body {
-    background-color: #1c1c1c;
-  }
- 
- .movie-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    color: #f5f5f5;
-    background-color: #1c1c1c;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding-bottom: 2px;
-    border-bottom: 1px solid #ccc;
-    font-family: 'Bebas Neue';
-    margin-top: 0;
-    padding-top: 0;
-  }
-  
-  .header h1 {
-    margin-bottom: 0px;
-  }
-  
-  .title, .year {
-    margin-bottom: 0;
-    margin-top: -84px;
-    padding-top: 0;
-    z-index: 10;
-  }
+.movie-page {
+	max-width: 1200px;
+	margin: 0 auto;
+	color: #f5f5f5;
+	background-color: #1c1c1c;
+}
 
-  .title {
-    font-size: 84px;
-    font-weight: bold;
-  }
-  
-  .year {
-    font-size: 64px;
-    font-weight: bold;
-    margin-bottom: 7px;
-  }
-  
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	padding-bottom: 2px;
+	border-bottom: 1px solid #ccc;
+	font-family: "Bebas Neue";
+	margin-top: 0;
+	padding-top: 0;
+}
 
-  .info {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    font-family: 'Roboto', sans-serif;
-  }
+.header h1 {
+	margin-bottom: 0px;
+}
 
-  .info p {
-    margin-bottom: 0;
-  }
+.title,
+.year {
+	margin-bottom: 0;
+	margin-top: -84px;
+	padding-top: 0;
+	z-index: 10;
+}
 
-  .content-wrapper {
-    display: flex;
-    gap: 20px;
-  }
+.title {
+	font-size: 84px;
+	font-weight: bold;
+}
 
-  
-  .main-content {
-    display: block;
-    flex: 1;
-    justify-content: space-between;
-    align-items: flex-start;
-    font-family: 'Playfair Display', serif;
-  }
-  
-  .trailer-placeholder {
-    width: 600px;
-    height: 300px;
-    background: #ccc;
-  }
-  
-  .sidebar {
-    margin-top: 10px;
-    width: 250px;
-    text-align: center;
-  }
-  
-  .poster {
-    width: 100%;
-    height: 350px;
-    background: #ccc;
-    margin-bottom: 10px;
-  }
-  
-  .watchlist-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-  }
+.year {
+	font-size: 64px;
+	font-weight: bold;
+	margin-bottom: 7px;
+}
 
-  .bl-circle {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 300px;
-    height: 300px;
-    background-color: #ffd700;
-    border-radius: 50%;
-    transform: translate(-30%, 30%);
-    transition: transform 0.2s ease-out;
-  }
+.info {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	margin: 10px 0px 5px 0px;
+	font-family: "Roboto", sans-serif;
+}
 
-  .tl-circle {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 300px;
-    height: 300px;
-    background-color: #0A1A2E;
-    border-radius: 50%;
-    transform: translate(5%, -225%);
-    transition: transform 0.2s ease-out;
-  }
+.info p {
+	margin-bottom: 0;
+}
 
-  .tl-small-circle {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 300px;
-    height: 300px;
-    background-color: #DC143C;
-    border-radius: 50%;
-    transform: translate(-40%, -275%);
-    transition: transform 0.2s ease-out;
-  }
+.content-wrapper {
+	display: flex;
+	gap: 20px;
+}
 
-  .banner-container {
-    width: 100%;
-    height: 450px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
+.main-content {
+	display: block;
+	flex: 1;
+	justify-content: space-between;
+	align-items: flex-start;
+	font-family: "Playfair Display", serif;
+}
 
-  .banner-image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    object-position: center center;
-  }
+.genres,
+.overview,
+.rating,
+.cast {
+	margin-bottom: 20px;
+}
 
-  .banner-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(28, 28, 28, 0.3) 30%, rgba(28, 28, 28, 0.75) 60%, rgba(28, 28, 28, 1) 100%);
-    pointer-events: none;
-  }
+.overview h3,
+.rating h3,
+.cast h3,
+.trailer h3 {
+	margin-bottom: 10px;
+}
+
+.trailer-placeholder {
+	width: 600px;
+	height: 300px;
+	background: #ccc;
+}
+
+.sidebar {
+	margin-top: 10px;
+	width: 250px;
+	text-align: center;
+}
+
+.poster {
+	width: 100%;
+	height: 350px;
+	background: #ccc;
+	margin-bottom: 10px;
+}
+
+.watchlist-button {
+	display: block;
+	width: 100%;
+	padding: 10px;
+	border: none;
+	cursor: pointer;
+}
+
+.bl-circle {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 300px;
+	height: 300px;
+	background-color: #ffd700;
+	border-radius: 50%;
+	transform: translate(-30%, 30%);
+	transition: transform 0.2s ease-out;
+}
+
+.tl-circle {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 300px;
+	height: 300px;
+	background-color: #0a1a2e;
+	border-radius: 50%;
+	transform: translate(5%, -225%);
+	transition: transform 0.2s ease-out;
+}
+
+.tl-small-circle {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 300px;
+	height: 300px;
+	background-color: #dc143c;
+	border-radius: 50%;
+	transform: translate(-40%, -275%);
+	transition: transform 0.2s ease-out;
+}
+
+.banner-container {
+	width: 100%;
+	height: 450px;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.banner-image {
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+	object-position: center center;
+}
+
+.banner-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(
+		to bottom,
+		rgba(28, 28, 28, 0.3) 30%,
+		rgba(28, 28, 28, 0.75) 60%,
+		rgba(28, 28, 28, 1) 100%
+	);
+	pointer-events: none;
+}
+
+@media (max-width: 768px) {
+	.movie-page {
+		padding: 5px;
+	}
+
+	.header {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.title {
+		font-size: 48px;
+		margin-top: 10px;
+	}
+
+	.year {
+		font-size: 32px;
+	}
+
+	.content-wrapper {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.info {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.banner-container {
+		height: 300px;
+	}
+
+	.sidebar {
+		order: -1;
+		margin-top: 30px;
+		width: 100%;
+	}
+
+	.poster {
+		max-width: 300px;
+		height: auto;
+		margin: 0 auto;
+	}
+
+	.trailer-placeholder {
+		width: 400px;
+		height: 100px;
+	}
+
+	.watchlist-button {
+		width: 90%;
+		margin: 0 auto;
+	}
+}

@@ -11,7 +11,7 @@ app = FastAPI(
 # Allow frontend (React) to communicate with FastAPI
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Allow frontend based on frontend URL
+    allow_origins=["http://localhost:3000", "https://refactored-parakeet-g7779xv95v9fwrrg-3000.app.github.dev"],  # Allow frontend based on frontend URL
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers

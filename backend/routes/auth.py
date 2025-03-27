@@ -5,8 +5,8 @@ import datetime
 from fastapi import APIRouter, Body, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from dotenv import load_dotenv
-from models import LoginModel, ForgotPasswordModel, ResetPasswordRequest
-from database import users_collection
+from backend.models import LoginModel, ForgotPasswordModel, ResetPasswordRequest
+from backend.database import users_collection
 from utils.hashing import verifyPassword, generateResetToken, generateHash
 from utils.emailUtils import sendResetEmail
 
