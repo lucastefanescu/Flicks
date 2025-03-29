@@ -33,7 +33,7 @@ const ResetPasswordForm = () => {
 		try {
 			//change url based on deployment link
 			const response = await axios.post(
-				`http://127.0.0.1:8030/auth/reset-password/${token}`,
+				`http://127.0.0.1:8000/auth/reset-password/${token}`,
 				{ new_password: newPassword },
 				{ headers: { "Content-Type": "application/json" } }
 			);

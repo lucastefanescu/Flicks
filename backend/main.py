@@ -1,72 +1,69 @@
-import os
-import faiss
-from backend import globals
-from fastapi import FastAPI
-from pydantic import BaseModel
-from motor.motor_asyncio import AsyncIOMotorClient
-from backend import recommendersystem
-from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
-import numpy as np
-import json
+# from fastapi import FastAPI
+# from pydantic import BaseModel
+# from motor.motor_asyncio import AsyncIOMotorClient
+# from backend import recommendersystem
+# from fastapi.middleware.cors import CORSMiddleware
+# from contextlib import asynccontextmanager
+# import numpy as np
+# import json
 
-MONGODB_URL = os.getenv("MONGODB_URL")
+# MONGODB_URL = os.getenv("MONGODB_URL")
 
-client = AsyncIOMotorClient(MONGODB_URL)
-database = client["flicks"]
-recommendation_collection = database["users"]
+# client = AsyncIOMotorClient(MONGODB_URL)
+# database = client["flicks"]
+# recommendation_collection = database["users"]
 
-INDEX_PATH = "./faiss.index"
+# INDEX_PATH = "./faiss.index"
 
-class Rating(BaseModel):
-    rating: float
+# class Rating(BaseModel):
+#     rating: float
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    if not os.path.exists(INDEX_PATH):
-        vectors = await getAllVectors()
-        faiss_index = build_faiss_index(vectors)
-        faiss.write_index(faiss_index, INDEX_PATH)
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     if not os.path.exists(INDEX_PATH):
+#         vectors = await getAllVectors()
+#         faiss_index = build_faiss_index(vectors)
+#         faiss.write_index(faiss_index, INDEX_PATH)
 
-        with open("movie_ids.json", "w") as f:
-            json.dump(globals.movieId_list, f)
-    else:
-        faiss_index = faiss.read_index(INDEX_PATH)
-        with open("movie_ids.json", "r") as f:
-            globals.movieId_list = json.load(f)
-    yield
+#         with open("movie_ids.json", "w") as f:
+#             json.dump(globals.movieId_list, f)
+#     else:
+#         faiss_index = faiss.read_index(INDEX_PATH)
+#         with open("movie_ids.json", "r") as f:
+#             globals.movieId_list = json.load(f)
+#     yield
 
-app = FastAPI(lifespan=lifespan)
+# app = FastAPI(lifespan=lifespan)
 
-@app.post("/rate")
-async def receive_rating(rating: Rating):
-    print(f"Received rating: {rating.rating}")
-    return {"message": "Rating received", "rating": rating.rating}
+# @app.post("/rate")
+# async def receive_rating(rating: Rating):
+#     print(f"Received rating: {rating.rating}")
+#     return {"message": "Rating received", "rating": rating.rating}
 
-async def getAllVectors():
-    movie_dict = {}
-    async for doc in recommendation_collection.find({}, {"cos_vector": 1, "movieId": 1}):
-        movie_dict[doc["movieId"]] = doc["cos_vector"]
+# async def getAllVectors():
+#     movie_dict = {}
+#     async for doc in recommendation_collection.find({}, {"cos_vector": 1, "movieId": 1}):
+#         movie_dict[doc["movieId"]] = doc["cos_vector"]
 
-    globals.movieId_list = list(movie_dict.keys())
-    vector_list = list(movie_dict.values())
+#     globals.movieId_list = list(movie_dict.keys())
+#     vector_list = list(movie_dict.values())
 
-    return np.array(vector_list, dtype=np.float32)
+#     return np.array(vector_list, dtype=np.float32)
 
-def build_faiss_index(np_vectors):
-    d = np_vectors.shape[1]
-    index = faiss.IndexFlatIP(d)
-    index.add(np_vectors)
+# def build_faiss_index(np_vectors):
+#     d = np_vectors.shape[1]
+#     index = faiss.IndexFlatIP(d)
+#     index.add(np_vectors)
 
-    return index
+#     return index
 
 
-app.include_router(recommendersystem.router, prefix="/preferenceModal")
+# app.include_router(recommendersystem.router, prefix="/preferenceModal")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://refactored-parakeet-g7779xv95v9fwrrg-3000.app.github.dev"],
-    allow_credentials=True,
-    allow_methods=["*"],  
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["http://localhost:3000", "https://refactored-parakeet-g7779xv95v9fwrrg-3000.app.github.dev"],
+#     allow_credentials=True,
+#     allow_methods=["*"],  
+#     allow_headers=["*"],
+# )

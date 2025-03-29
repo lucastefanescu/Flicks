@@ -7,24 +7,32 @@ from typing_extensions import Annotated
 # ObjectId Handling
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
+class FormInfo(BaseModel):
+    user_id: int
+    genres: list
+    fav_movies: list
+    animated_movies: int
+    older_recent: int
+
 class RatingModel(BaseModel):
     userId: int
     movieId: int
     rating: float
     title: str
     year: str
-    genres: Dict[str, str]
+    genres: str
 
 # Model for user signup
 class UserModel(BaseModel):
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    id: Optional[int] = Field(alias="_id", default=None)
     firstName: str = Field(...)
     lastName: str = Field(...)
     email: EmailStr = Field(...)
     username: str = Field(...)
     password: str = Field(...)
 
-    ratings: Optional[List[RatingModel]] = []
+    ratings: Optional[List[int]] = []
+    rating_vector: Optional[List[int]] = []
 
 # Model for user login
 class LoginModel(BaseModel):

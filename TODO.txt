@@ -1,0 +1,19 @@
+---High prio---
+
+profile page, 
+rec system
+
+deployment
+
+mapping tmdb genres to our genres
+
+---med prio---
+
+if movieId doesn't exist in the dataset, we will have to leave it as the tmdbId or find some alternative.
+
+lazy load images, 
+add onclick ot search images,
+
+Please fill in this field styling
+
+when singing up if there is an error the account is still created

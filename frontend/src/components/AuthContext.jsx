@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
 
@@ -9,6 +8,7 @@ export const AuthProvider = ({ children }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(
 		localStorage.getItem("isLoggedIn") === "true"
 	);
+	const [userId, setUserId] = useState(0);
 
 	useEffect(() => {
 		const verifyToken = async () => {
@@ -44,7 +44,9 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	return (
-		<AuthContext.Provider value={{ isLoggedIn, token, login, logout }}>
+		<AuthContext.Provider
+			value={{ isLoggedIn, token, login, logout, userId, setUserId }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

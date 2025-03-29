@@ -1,21 +1,13 @@
 import faiss
 from backend import globals
-from fastapi import HTTPException, APIRouter
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
-from pydantic import BaseModel
+from fastapi import APIRouter
+from backend.database import users_collection
+from backend.models import FormInfo
 from sklearn.preprocessing import normalize
 import numpy as np
 from backend.database import recommendation_collection
 
 router = APIRouter()
-
-class FormInfo(BaseModel):
-    user_id: int
-    genres: list
-    fav_movies: list
-    animated_movies: int
-    older_recent: int
 
 mapping = {
     "Action": 0,
@@ -42,10 +34,12 @@ def compute_vector(genres: list, fav_movies: list, animated_movies: int, older_r
 
     form_vector = [0] * 20
     for i in range(len(genres)):
-        form_vector[mapping[genres[i]]] += 1
+        if genres[i] in mapping:
+            form_vector[mapping[genres[i]]] += 1
 
     for i in range(len(fav_movies)):
-        form_vector[mapping[fav_movies[i]]] += 1
+        if genres[i] in mapping:
+            form_vector[mapping[fav_movies[i]]] += 1
 
     form_vector[18] = animated_movies
 
@@ -59,14 +53,30 @@ def compute_vector(genres: list, fav_movies: list, animated_movies: int, older_r
 
     return form_np_vector
 
-@router.post("/")
+@router.post("/SubmitModal")
+async def submitModal(formInfo: FormInfo):
+    try:
+        user = await users_collection.find_one({"_id": formInfo.user_id})
+
+        if "rating_vector" not in user:
+            user["rating_vector"] = []
+        
+        rating_vec = compute_vector(formInfo.genres, formInfo.fav_movies, formInfo.animated_movies, formInfo.older_recent).squeeze().tolist()
+        await users_collection.update_one(
+            {"_id": formInfo.user_id},
+            {"$set": {"rating_vector": rating_vec}}
+        )
+    except:
+        print("there was an error submiting the preference modal form")
+    
+    return user["rating_vector"]
+
+@router.post("/getRecommendations")
 async def cosine_similarity_input(Form_Info: FormInfo):
     form_vec = compute_vector(genres = Form_Info.genres, fav_movies=Form_Info.fav_movies, animated_movies=Form_Info.animated_movies, older_recent=Form_Info.older_recent)
     faiss_index = faiss.read_index("./faiss.index")
 
     d, indicies = faiss_index.search(form_vec, 5)
-
-    print(globals.movieId_list)
 
     movie_list = [globals.movieId_list[i] for i in indicies[0]]
 

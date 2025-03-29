@@ -14,7 +14,7 @@ const LoginForm = () => {
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
-	const { login } = useAuth();
+	const { login, setUserId, userId } = useAuth();
 
 	const togglePasswordVisibility = () => {
 		setPasswordVisible(!passwordVisible);
@@ -40,7 +40,8 @@ const LoginForm = () => {
 			if (token) {
 				login(token);
 				toast.success("Login successful!");
-				navigate("/");
+				setUserId(response.data.user_id);
+				navigate("/Preferences");
 			} else {
 				toast.error("Login successful, but no token received.");
 			}

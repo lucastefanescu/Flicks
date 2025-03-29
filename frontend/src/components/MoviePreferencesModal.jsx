@@ -2,10 +2,12 @@ import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import genres from "../Data/genres.json";
 import moods from "../Data/moods.json";
+import idToGenre from "../Data/idtogenre.json";
 import "../styling/MoviePreferences.css";
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAuth } from "./AuthContext";
 
-const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+const API_KEY = process.env.REACT_APP_API_ACCESS_TOKEN;
 
 const options = {
 	method: "GET",
@@ -32,6 +34,10 @@ const mappedMoods = moods.map((mood) => ({
 	label: mood,
 }));
 
+const genreMap = new Map(
+	idToGenre.genres.map((value) => [value.id, value.name])
+);
+
 const oldRecent = [
 	{ label: "Recent", value: "recent" },
 	{ label: "Classic", value: "classic" },
@@ -39,12 +45,16 @@ const oldRecent = [
 
 function debounce(fn, delay) {
 	let timeoutId;
+	let lastReject;
 	return function (...args) {
+		if (lastReject) {
+			lastReject({ canceled: true });
+		}
 		clearTimeout(timeoutId);
 		return new Promise((resolve, reject) => {
 			timeoutId = setTimeout(async () => {
 				try {
-					const result = await fn.apply(args);
+					const result = await fn(...args);
 					resolve(result);
 				} catch (error) {
 					reject(error);
@@ -57,13 +67,14 @@ function debounce(fn, delay) {
 const loadOptions = async (inputValue) => {
 	try {
 		const response = await fetch(
-			`https://api.themoviedb.org/3/search/movie?query=${inputValue}&include_adult=true&language=en-US&page=1&region=US`,
+			`https://api.themoviedb.org/3/search/movie?query=${inputValue}&include_adult=false&language=en-US&page=1&region=US`,
 			options
 		);
 		const result = await response.json();
 		return result.results.map((movie) => ({
-			value: movie.original_title.toLowerCase(),
+			value: movie.id,
 			label: movie.original_title,
+			genre: movie.genre_ids.map((value) => genreMap.get(value)),
 		}));
 	} catch {
 		console.log("Error has Occurred when calling API to retrieve movies");
@@ -74,30 +85,93 @@ const loadOptions = async (inputValue) => {
 const debouncedLoadOptions = debounce(loadOptions, 300);
 
 function MoviePreferencesModal() {
+	const [genres, setGenres] = useState([]);
+	const [movies, setMovies] = useState([]);
+	const [animation, setAnimation] = useState(0);
+	const [olderRecent, setOlderRecent] = useState(-1);
+	const { userId } = useAuth();
+
+	useEffect(() => {
+		console.log(movies);
+	}, [movies]);
+
+	const handleMoviesChange = useCallback(async (values) => {
+		setMovies(values);
+	}, []);
+
+	const handleFormSubmit = useCallback(
+		async (e) => {
+			e.preventDefault();
+			try {
+				const response = await fetch(
+					"http://localhost:8000/Recommendations/SubmitModal",
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							userId: userId,
+							genres: genres,
+							fav_movies: movies,
+							animated_movies: animation,
+							older_recent: olderRecent,
+						}),
+					}
+				);
+				if (!response.ok) {
+					console.log(response.status);
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		},
+		[genres, movies, userId, animation, olderRecent]
+	);
+
 	return (
-		<div>
+		<div className="Modal-Container">
 			<div className="preference-modal">
-				<div className="preference-modal-inside">
+				<form className="preference-modal-inside" onSubmit={handleFormSubmit}>
 					<h1>Set movie preferences</h1>
 					<h2>Preferred Genres</h2>
 					<Select
 						options={mappedGenres}
 						isMulti={true}
 						classNamePrefix="react-select"
+						value={genres}
+						onChange={(values) => {
+							setGenres(values || []);
+						}}
 					/>
 					<h2>What are Your 3 Favourite Movies</h2>
 					<AsyncSelect
 						loadOptions={debouncedLoadOptions}
 						classNamePrefix="react-select"
+						isMulti={true}
+						value={movies}
+						onChange={handleMoviesChange}
 					/>
 					<h2>How Much Do You Enjoy Animated Movies (1-5)</h2>
-					<Select options={mappedRatings} classNamePrefix="react-select" />
+					<Select
+						options={mappedRatings}
+						classNamePrefix="react-select"
+						value={animation}
+						onChange={(value) => setAnimation(value)}
+					/>
 					<h2>What is your mood right now</h2>
 					<Select options={mappedMoods} classNamePrefix="react-select" />
 					<h2>Do you Prefer Older Movies or Recent Movies</h2>
-					<Select options={oldRecent} classNamePrefix="react-select" />
-					<button>SUBMIT</button>
-				</div>
+					<Select
+						options={oldRecent}
+						classNamePrefix="react-select"
+						value={olderRecent}
+						onChange={(value) => {
+							setOlderRecent(value);
+						}}
+					/>
+					<button type="submit">SUBMIT</button>
+				</form>
 			</div>
 		</div>
 	);

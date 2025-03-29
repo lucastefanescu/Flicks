@@ -20,18 +20,16 @@ const SignupForm = () => {
 		e.preventDefault();
 		setMessage("");
 		setLoading(true);
-		//http://127.0.0.1:8030/users/signup
 		try {
-			await axios.post("http://127.0.0.1:8030/users/signup", {
+			await axios.post("http://127.0.0.1:8000/users/signup", {
 				firstName,
 				lastName,
 				email,
 				username,
 				password,
 			});
-
-			toast.success("Account created successfully! Redirecting to login...");
-			setTimeout(() => navigate("/login"), 3000);
+			toast.success("Account created successfully!");
+			setTimeout(() => navigate("/Login"), 3000);
 		} catch (error) {
 			toast.error(
 				error.response?.data?.detail || "Error signing up. Try again."

@@ -7,8 +7,8 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from dotenv import load_dotenv
 from backend.models import LoginModel, ForgotPasswordModel, ResetPasswordRequest
 from backend.database import users_collection
-from utils.hashing import verifyPassword, generateResetToken, generateHash
-from utils.emailUtils import sendResetEmail
+from backend.utils.hashing import verifyPassword, generateResetToken, generateHash
+from backend.utils.emailUtils import sendResetEmail
 
 # Load environment variables from .env file
 load_dotenv()
