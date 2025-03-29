@@ -1,11 +1,10 @@
 import faiss
 from backend import globals
 from fastapi import APIRouter
-from backend.database import users_collection
-from backend.models import FormInfo
+from backend.database import users_collection, recommendation_collection
+from backend.models import FormInfo, UserIdModel
 from sklearn.preprocessing import normalize
 import numpy as np
-from backend.database import recommendation_collection
 
 router = APIRouter()
 
@@ -74,8 +73,15 @@ async def submitModal(formInfo: FormInfo):
     return user["rating_vector"]
 
 @router.post("/getCosRecommendations")
-async def cosine_similarity_input(Form_Info: FormInfo):
-    form_vec = compute_vector(genres = Form_Info.genres, fav_movies=Form_Info.fav_movies, animated_movies=Form_Info.animated_movies, older_recent=Form_Info.older_recent)
+async def cosine_similarity_input(UserIdModel: UserIdModel):
+    user = await users_collection.find_one(
+        {"_id": UserIdModel.user_id}
+    )
+
+    form_vec = user["rating_vector"]
+
+    form_vec = np.array(form_vec, dtype=np.float32).reshape(1, -1)
+
     faiss_index = faiss.read_index("./faiss.index")
 
     d, indicies = faiss_index.search(form_vec, 5)

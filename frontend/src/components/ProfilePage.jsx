@@ -24,10 +24,24 @@ const responsive = {
 };
 
 const ProfilePage = () => {
+	const [] = useState([]);
+	const [Recommendations, setRecommendations] = useState([]);
+
+	useEffect(() => {
+		fetch("http://localhost:8000/Recommendations/SubmitModal", {
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: {
+				json.
+			}
+		});
+	});
+
 	return (
 		<>
 			<Navbar></Navbar>
-			{/* <Carousel responsive={responsive}></Carousel> */}
+			<Carousel responsive={responsive}></Carousel>
 		</>
 	);
 };

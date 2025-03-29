@@ -7,6 +7,9 @@ from typing_extensions import Annotated
 # ObjectId Handling
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
+class UserIdModel(BaseModel):
+    user_id: int
+
 class FormInfo(BaseModel):
     user_id: int
     genres: List[str]
