@@ -8,36 +8,34 @@ from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from backend.routes import auth, users
+from backend.database import recommendation_collection
 import faiss
 import numpy as np
 from backend import globals
 import json
 from backend.database import db
 
-recommendation_collection = db["users"]
 INDEX_PATH = "./faiss.index"
 
 class Rating(BaseModel):
     rating: float
 
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
-#     if not os.path.exists(INDEX_PATH):
-#         vectors = await getAllVectors()
-#         faiss_index = build_faiss_index(vectors)
-#         faiss.write_index(faiss_index, INDEX_PATH)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if not os.path.exists(INDEX_PATH):
+        vectors = await getAllVectors()
+        faiss_index = build_faiss_index(vectors)
+        faiss.write_index(faiss_index, INDEX_PATH)
 
-#         with open("movie_ids.json", "w") as f:
-#             json.dump(globals.movieId_list, f)
-#     else:
-#         faiss_index = faiss.read_index(INDEX_PATH)
-#         with open("movie_ids.json", "r") as f:
-#             globals.movieId_list = json.load(f)
-#     yield
+        with open("movie_ids.json", "w") as f:
+            json.dump(globals.movieId_list, f)
+    else:
+        faiss_index = faiss.read_index(INDEX_PATH)
+        with open("movie_ids.json", "r") as f:
+            globals.movieId_list = json.load(f)
+    yield
 
-#lifespan=lifespan
-
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 async def getAllVectors():
     movie_dict = {}

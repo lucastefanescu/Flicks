@@ -9,8 +9,8 @@ PyObjectId = Annotated[str, BeforeValidator(str)]
 
 class FormInfo(BaseModel):
     user_id: int
-    genres: list
-    fav_movies: list
+    genres: List[str]
+    fav_movies: List[str]
     animated_movies: int
     older_recent: int
 

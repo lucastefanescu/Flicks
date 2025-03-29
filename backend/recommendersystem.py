@@ -10,6 +10,7 @@ from backend.database import recommendation_collection
 router = APIRouter()
 
 mapping = {
+
     "Action": 0,
     "Adventure": 1,
     "Children": 2,
@@ -38,7 +39,7 @@ def compute_vector(genres: list, fav_movies: list, animated_movies: int, older_r
             form_vector[mapping[genres[i]]] += 1
 
     for i in range(len(fav_movies)):
-        if genres[i] in mapping:
+        if fav_movies[i] in mapping:
             form_vector[mapping[fav_movies[i]]] += 1
 
     form_vector[18] = animated_movies
@@ -55,6 +56,7 @@ def compute_vector(genres: list, fav_movies: list, animated_movies: int, older_r
 
 @router.post("/SubmitModal")
 async def submitModal(formInfo: FormInfo):
+    print(formInfo.genres, formInfo.user_id, formInfo.fav_movies, formInfo.animated_movies, formInfo.older_recent)
     try:
         user = await users_collection.find_one({"_id": formInfo.user_id})
 
@@ -71,7 +73,7 @@ async def submitModal(formInfo: FormInfo):
     
     return user["rating_vector"]
 
-@router.post("/getRecommendations")
+@router.post("/getCosRecommendations")
 async def cosine_similarity_input(Form_Info: FormInfo):
     form_vec = compute_vector(genres = Form_Info.genres, fav_movies=Form_Info.fav_movies, animated_movies=Form_Info.animated_movies, older_recent=Form_Info.older_recent)
     faiss_index = faiss.read_index("./faiss.index")
@@ -79,5 +81,5 @@ async def cosine_similarity_input(Form_Info: FormInfo):
     d, indicies = faiss_index.search(form_vec, 5)
 
     movie_list = [globals.movieId_list[i] for i in indicies[0]]
-
+    
     return {"movie ids": movie_list}

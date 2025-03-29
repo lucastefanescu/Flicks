@@ -6,6 +6,7 @@ import idToGenre from "../Data/idtogenre.json";
 import "../styling/MoviePreferences.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const API_KEY = process.env.REACT_APP_API_ACCESS_TOKEN;
 
@@ -39,8 +40,8 @@ const genreMap = new Map(
 );
 
 const oldRecent = [
-	{ label: "Recent", value: "recent" },
-	{ label: "Classic", value: "classic" },
+	{ label: "Recent", value: 1 },
+	{ label: "Classic", value: 0 },
 ];
 
 function debounce(fn, delay) {
@@ -90,13 +91,18 @@ function MoviePreferencesModal() {
 	const [animation, setAnimation] = useState(0);
 	const [olderRecent, setOlderRecent] = useState(-1);
 	const { userId } = useAuth();
+	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log(movies);
-	}, [movies]);
+		console.log(movies, genres, animation, olderRecent, userId);
+	}, [movies, genres, animation, olderRecent, userId]);
 
 	const handleMoviesChange = useCallback(async (values) => {
-		setMovies(values);
+		if (Array.isArray(values)) {
+			setMovies(values);
+		} else {
+			setMovies([values]);
+		}
 	}, []);
 
 	const handleFormSubmit = useCallback(
@@ -111,16 +117,18 @@ function MoviePreferencesModal() {
 							"Content-Type": "application/json",
 						},
 						body: JSON.stringify({
-							userId: userId,
-							genres: genres,
-							fav_movies: movies,
-							animated_movies: animation,
-							older_recent: olderRecent,
+							user_id: userId,
+							genres: genres.map((obj) => obj.label),
+							fav_movies: movies.flatMap((obj) => obj.genre),
+							animated_movies: animation.label,
+							older_recent: olderRecent.value,
 						}),
 					}
 				);
 				if (!response.ok) {
 					console.log(response.status);
+				} else {
+					navigate("/");
 				}
 			} catch (err) {
 				console.log(err);
@@ -141,7 +149,11 @@ function MoviePreferencesModal() {
 						classNamePrefix="react-select"
 						value={genres}
 						onChange={(values) => {
-							setGenres(values || []);
+							if (Array.isArray(values)) {
+								setGenres(values);
+							} else {
+								setGenres([values]);
+							}
 						}}
 					/>
 					<h2>What are Your 3 Favourite Movies</h2>
