@@ -34,7 +34,7 @@ class UserModel(BaseModel):
     username: str = Field(...)
     password: str = Field(...)
     ratings: Optional[List[int]] = []
-    rating_vector: Optional[List[int]] = []
+    rating_vector: Optional[List[float]] = []
     firstLogin: int = 1
 
 # Model for user login

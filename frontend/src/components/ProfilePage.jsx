@@ -12,37 +12,74 @@ const responsive = {
 	},
 	desktop: {
 		breakpoint: { max: 3000, min: 1024 },
-		items: 3,
+		items: 4,
 	},
 	tablet: {
 		breakpoint: { max: 1024, min: 464 },
-		items: 2,
+		items: 3,
 	},
 	mobile: {
 		breakpoint: { max: 464, min: 0 },
-		items: 1,
+		items: 2,
 	},
 };
+
+const API_ACESS_TOKEN = process.env.REACT_APP_API_ACCESS_TOKEN;
 
 const options = {
 	method: "GET",
 	headers: {
 		accept: "application/json",
-		Authorization:
-			"Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YjNiNmUxMjEwOGRlYTRiZWY3NTJkZGY1OGUwMTY4ZCIsIm5iZiI6MTc0MDUxODQzMy4wNDcwMDAyLCJzdWIiOiI2N2JlMzQyMTM5Y2I3ODIwZDBlZjlkMjUiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.Gum5ygmItHZaQaZkWHWNTr8s5KNxSzPTwau8fi88BXU",
+		Authorization: `Bearer ${API_ACESS_TOKEN}`,
 	},
 };
 
+const poster_prefix = "https://image.tmdb.org/t/p/w500";
+
 const ProfilePage = () => {
-	const [] = useState([]);
+	const [ratings, setRatings] = useState([]);
 	const [Recommendations, setRecommendations] = useState([]);
 	const { userId } = useAuth();
-	useEffect(() => {
-		console.log("RECOMMENDATIONS: " + Recommendations);
-	}, [Recommendations]);
 
 	useEffect(() => {
-		console.log("USER ID IS: " + userId);
+		async function fetchData() {
+			try {
+				const response = await fetch(
+					`http://localhost:8000/users/${userId}/getRatings`
+				);
+				if (!response.ok) {
+					console.log("error retrieving ratings for user");
+				}
+				const result = await response.json();
+				const resultArray = Object.entries(result).flat();
+				const resultQueries = resultArray[1] || [];
+
+				console.log(resultQueries);
+
+				const movies = await Promise.all(
+					resultQueries.map(async (id) => {
+						const response_tmdb = await fetch(
+							`https://api.themoviedb.org/3/movie/${id}?language=en-US`,
+							options
+						);
+						if (!response.ok) {
+							console.log("error retrieving movies with movieIds");
+							return null;
+						}
+						return response_tmdb.json();
+					})
+				);
+				const validMovies = movies.filter(Boolean);
+				const final = validMovies.map(
+					(movie) => `${poster_prefix}${movie.poster_path}`
+				);
+				console.log(final);
+				setRatings(final);
+			} catch (error) {
+				console.log("error fetching the ratings from user: " + error);
+			}
+		}
+		fetchData();
 	}, [userId]);
 
 	useEffect(() => {
@@ -67,18 +104,28 @@ const ProfilePage = () => {
 				const result = await response.json();
 				const queryIds = Object.entries(result).flat();
 				const finalQueryIds = queryIds[1];
-				finalQueryIds.forEach(async (id) => {
-					const response2 = await fetch(
-						`https://api.themoviedb.org/3/movie/${id}?language=en-US`,
-						options
-					);
-					if (!response2.ok) {
-						console.log("error in second fetch" + response.status);
-					}
-					const result = await response2.json();
-					console.log(Object.values(result));
-					// setRecommendations(result.belongs_to_collection.poster_path);
-				});
+
+				const movies = await Promise.all(
+					finalQueryIds.map(async (id) => {
+						const response2 = await fetch(
+							`https://api.themoviedb.org/3/movie/${id}?language=en-US`,
+							options
+						);
+						if (!response2.ok) {
+							console.log("error in second fetch" + response2.status);
+							return null;
+						}
+						return response2.json();
+					})
+				);
+
+				const validMovies = movies.filter(Boolean);
+
+				const finalResult = validMovies.map(
+					(value) => `${poster_prefix}${value.poster_path}`
+				);
+
+				setRecommendations(finalResult);
 			} catch (err) {
 				console.log(err);
 			}
@@ -87,15 +134,49 @@ const ProfilePage = () => {
 	}, [userId]);
 
 	return (
-		<>
+		<div className="Profile-Container">
 			<Navbar></Navbar>
-			<Carousel responsive={responsive}>
-				<div>item 1</div>
-				{Recommendations.map((value, i) => {
-					return <img src={`${value}`} alt={`movie ${i}`} key={i} />;
-				})}
-			</Carousel>
-		</>
+			<h1>Hi... Name</h1>
+			<h2>Your Rated Movies</h2>
+			<div className="carousel-wrapper 1">
+				<Carousel
+					responsive={responsive}
+					className={"carousel ratings"}
+					itemClass={"profile-wrapper ratings"}
+				>
+					{ratings.map((movie, i) => {
+						return (
+							<img
+								src={movie}
+								alt="movie"
+								className={`carousel-item rating ${i}`}
+							></img>
+						);
+					})}
+				</Carousel>
+			</div>
+
+			<h2>Recommended For You</h2>
+			<div className="carousel-wrapper 2">
+				<Carousel
+					responsive={responsive}
+					className={"carousel recommendations"}
+					itemClass={"profile-wrapper recommendations"}
+					infinite={true}
+				>
+					{Recommendations.map((value, i) => {
+						return (
+							<img
+								src={value}
+								alt={`movie ${i}`}
+								key={i}
+								className={`carousel-item recommendations ${i}`}
+							/>
+						);
+					})}
+				</Carousel>
+			</div>
+		</div>
 	);
 };
 export default ProfilePage;

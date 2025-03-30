@@ -80,6 +80,7 @@ async def submitModal(formInfo: FormInfo):
 
 @router.post("/getCosRecommendations")
 async def cosine_similarity_input(UserIdModel: UserIdModel):
+    
     user = await users_collection.find_one(
         {"_id": UserIdModel.user_id}
     )
