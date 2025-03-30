@@ -9,7 +9,6 @@ import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const API_KEY = process.env.REACT_APP_API_ACCESS_TOKEN;
-
 const options = {
 	method: "GET",
 	headers: {
@@ -90,7 +89,7 @@ function MoviePreferencesModal() {
 	const [movies, setMovies] = useState([]);
 	const [animation, setAnimation] = useState(0);
 	const [olderRecent, setOlderRecent] = useState(-1);
-	const { userId } = useAuth();
+	const { userId, modalComplete } = useAuth();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -128,6 +127,7 @@ function MoviePreferencesModal() {
 				if (!response.ok) {
 					console.log(response.status);
 				} else {
+					modalComplete();
 					navigate("/");
 				}
 			} catch (err) {

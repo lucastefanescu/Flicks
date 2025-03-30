@@ -30,9 +30,9 @@ class UserModel(BaseModel):
     email: EmailStr = Field(...)
     username: str = Field(...)
     password: str = Field(...)
-
     ratings: Optional[List[int]] = []
     rating_vector: Optional[List[int]] = []
+    firstLogin: int = 1
 
 # Model for user login
 class LoginModel(BaseModel):

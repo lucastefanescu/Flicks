@@ -5,10 +5,12 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(localStorage.getItem("token"));
+	const [userId, setUserId] = useState(localStorage.getItem("userId"));
+	const [firstLogin, setFirstLogin] = useState(localStorage.getItem("firstLogin"));
 	const [isLoggedIn, setIsLoggedIn] = useState(
 		localStorage.getItem("isLoggedIn") === "true"
 	);
-	const [userId, setUserId] = useState(0);
+	
 
 	useEffect(() => {
 		const verifyToken = async () => {
@@ -31,21 +33,37 @@ export const AuthProvider = ({ children }) => {
 		verifyToken();
 	}, [token]);
 
-	const login = (newToken) => {
+	const modalComplete = () => {
+		localStorage.removeItem("firstLogin");
+		setFirstLogin(null);
+	}
+	const login = (newToken,userId,firstLogin) => {
 		localStorage.setItem("token", newToken);
+		localStorage.setItem("userId",userId);
+		setUserId(userId);
 		setToken(newToken);
 		setIsLoggedIn(true);
+		if (firstLogin == 1){
+			localStorage.setItem("firstLogin",true);
+			setFirstLogin(firstLogin);
+		}
+		else{
+			localStorage.removeItem("firstLogin");
+			setFirstLogin(null);	
+		}
 	};
-
 	const logout = () => {
 		localStorage.removeItem("token");
+		localStorage.removeItem("userId");
+		localStorage.removeItem("firstLogin");
+		setFirstLogin(null);
 		setToken(null);
 		setIsLoggedIn(false);
 	};
 
 	return (
 		<AuthContext.Provider
-			value={{ isLoggedIn, token, login, logout, userId, setUserId }}
+			value={{ isLoggedIn, token, login, logout, userId, firstLogin, modalComplete }}
 		>
 			{children}
 		</AuthContext.Provider>

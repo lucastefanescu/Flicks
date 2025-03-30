@@ -17,6 +17,7 @@ import SearchPage from "./components/SearchPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import MoviePreferenceModal from "./components/MoviePreferencesModal.jsx";
 import { Toaster } from "react-hot-toast";
+import PreferencePriority from "./components/PreferencePriority.jsx";
 
 function App() {
 	return (
@@ -41,7 +42,8 @@ function App() {
 					}}
 				/>
 				<Routes>
-					<Route path="/" element={<FlicksLandingPage />} />
+					<Route element={<PreferencePriority/>}>
+						<Route path="/" element={<FlicksLandingPage />} />
 					<Route path="/SignUp" element={<SignupForm />} />
 					<Route path="/Login" element={<LoginForm />} />
 					<Route path="/ForgotPassword" element={<ForgotPasswordForm />} />
@@ -55,6 +57,8 @@ function App() {
 						/>
 						<Route path="/Preferences" element={<MoviePreferenceModal />} />
 					</Route>
+					</Route>
+
 					<Route path="*" element={<Navigate to="/Login" replace />} />
 				</Routes>
 			</AuthProvider>
