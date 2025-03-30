@@ -14,7 +14,7 @@ const LoginForm = () => {
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
-	const { login, setUserId, userId } = useAuth();
+	const { login} = useAuth();
 
 	const togglePasswordVisibility = () => {
 		setPasswordVisible(!passwordVisible);
@@ -34,14 +34,20 @@ const LoginForm = () => {
 			});
 
 			console.log("✅ API Response:", response.data); // Debugging API response
-
 			// Extract token correctly
 			const token = response.data.token;
+			const userId = response.data.user_id;
+			const firstLogin = response.data.firstLogin;
 			if (token) {
-				login(token);
+				login(token,userId,firstLogin);
 				toast.success("Login successful!");
-				setUserId(response.data.user_id);
-				navigate("/Preferences");
+				const fl = localStorage.getItem("firstLogin");
+				if(fl == true){
+					navigate("/Preferences");	
+				}
+				else{
+					navigate("/");
+				}
 			} else {
 				toast.error("Login successful, but no token received.");
 			}

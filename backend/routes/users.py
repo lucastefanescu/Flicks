@@ -42,7 +42,7 @@ async def getUserId() -> int:
     return doc["current_counter"]
 
 @router.post("/signup", response_model=UserModel, status_code=status.HTTP_201_CREATED)
-async def createUser(user: UserModel = Body(...)):
+async def createUser(user: UserModel = Body(..., exclude={"firstLogin"})):
     existingUsername = await users_collection.find_one({"username": user.username})
     if existingUsername:
         raise HTTPException(status_code=400, detail="Username already exists")
@@ -50,9 +50,10 @@ async def createUser(user: UserModel = Body(...)):
     if existingEmail:
         raise HTTPException(status_code=400, detail="Email already exists")
     user.password = generateHash(user.password)
-    
     new_id = await getUserId()
     user.id = new_id
+    user.firstLogin = 1
+
     new_user = await users_collection.insert_one(user.model_dump(by_alias=True))
     created_user = await users_collection.find_one({"_id": new_user.inserted_id})
     return created_user

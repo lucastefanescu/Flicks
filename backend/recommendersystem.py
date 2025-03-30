@@ -65,7 +65,8 @@ async def submitModal(formInfo: FormInfo):
         rating_vec = compute_vector(formInfo.genres, formInfo.fav_movies, formInfo.animated_movies, formInfo.older_recent).squeeze().tolist()
         await users_collection.update_one(
             {"_id": formInfo.user_id},
-            {"$set": {"rating_vector": rating_vec}}
+            {"$set": {"rating_vector": rating_vec},
+            "$set": {"firstLogin": 0}}
         )
     except:
         print("there was an error submiting the preference modal form")

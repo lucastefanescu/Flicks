@@ -5,6 +5,7 @@ import "../../styling/SignupForm.css";
 import logo from "../../pictures/flick_logo.png";
 import toast from "react-hot-toast";
 
+
 const SignupForm = () => {
 	const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ const SignupForm = () => {
 				password,
 			});
 			toast.success("Account created successfully!");
-			setTimeout(() => navigate("/Login"), 3000);
+			setTimeout(() => navigate("/Login"), 3000);	
 		} catch (error) {
 			toast.error(
 				error.response?.data?.detail || "Error signing up. Try again."
