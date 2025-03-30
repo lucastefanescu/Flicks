@@ -1,7 +1,7 @@
 import faiss
 from backend import globals
 from fastapi import APIRouter
-from backend.database import users_collection, recommendation_collection
+from backend.database import users_collection
 from backend.models import FormInfo, UserIdModel
 from sklearn.preprocessing import normalize
 import numpy as np
@@ -63,11 +63,16 @@ async def submitModal(formInfo: FormInfo):
             user["rating_vector"] = []
         
         rating_vec = compute_vector(formInfo.genres, formInfo.fav_movies, formInfo.animated_movies, formInfo.older_recent).squeeze().tolist()
+        print(rating_vec)
         await users_collection.update_one(
             {"_id": formInfo.user_id},
-            {"$set": {"rating_vector": rating_vec},
-            "$set": {"firstLogin": 0}}
+            {"$set": {
+                "rating_vector": rating_vec,
+                "firstLogin": 0
+                },
+            }
         )
+        user["rating_vector"] = rating_vec
     except:
         print("there was an error submiting the preference modal form")
     

@@ -49,14 +49,14 @@ const ProfilePage = () => {
 		async function fetchData() {
 			try {
 				const response = await fetch(
-					"http://localhost:8000/Recommendations/SubmitModal",
+					"http://localhost:8000/Recommendations/getCosRecommendations",
 					{
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
 						},
 						body: JSON.stringify({
-							userId,
+							user_id: userId,
 						}),
 					}
 				);
@@ -66,17 +66,18 @@ const ProfilePage = () => {
 				}
 				const result = await response.json();
 				const queryIds = Object.entries(result).flat();
-
-				queryIds.forEach(async (id) => {
+				const finalQueryIds = queryIds[1];
+				finalQueryIds.forEach(async (id) => {
 					const response2 = await fetch(
-						`https://api.themoviedb.org/3/movie/${id}?append_to_response=poster_path&language=en-US`,
+						`https://api.themoviedb.org/3/movie/${id}?language=en-US`,
 						options
 					);
 					if (!response2.ok) {
 						console.log("error in second fetch" + response.status);
 					}
-					const result = response2.json();
-					setRecommendations(result.belongs_to_collection.poster_path);
+					const result = await response2.json();
+					console.log(Object.values(result));
+					// setRecommendations(result.belongs_to_collection.poster_path);
 				});
 			} catch (err) {
 				console.log(err);
@@ -90,9 +91,9 @@ const ProfilePage = () => {
 			<Navbar></Navbar>
 			<Carousel responsive={responsive}>
 				<div>item 1</div>
-				{/* {Recommendations.map((value, i) => {
+				{Recommendations.map((value, i) => {
 					return <img src={`${value}`} alt={`movie ${i}`} key={i} />;
-				})} */}
+				})}
 			</Carousel>
 		</>
 	);
