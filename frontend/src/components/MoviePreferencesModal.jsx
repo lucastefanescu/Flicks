@@ -93,10 +93,6 @@ function MoviePreferencesModal() {
 	const { userId } = useAuth();
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		console.log(movies, genres, animation, olderRecent, userId);
-	}, [movies, genres, animation, olderRecent, userId]);
-
 	const handleMoviesChange = useCallback(async (values) => {
 		if (Array.isArray(values)) {
 			setMovies(values);
@@ -134,7 +130,7 @@ function MoviePreferencesModal() {
 				console.log(err);
 			}
 		},
-		[genres, movies, userId, animation, olderRecent]
+		[genres, movies, userId, animation, olderRecent, navigate]
 	);
 
 	return (
