@@ -93,8 +93,12 @@ function SearchPage() {
 			.then((res) => res.json())
 			.then((res) => {
 				setPopularMovies(
-					res.results.slice(0, 10).map((input) => input.poster_path)
-				);
+					res.results.slice(0, 10).map((movie) => ({
+					  id: movie.id,
+					  poster: movie.poster_path
+					}))
+				  );
+				  
 			})
 			.catch((err) => console.error(err));
 	}, [options]);
@@ -163,15 +167,16 @@ function SearchPage() {
 				</div>
 				<h1>Search for your favourite Movies</h1>
 				<div className="searchPopularMoviesContainer">
-					{popularMovies.map((input, i) => {
-						return (
-							<img
-								key={i}
-								src={`${baseURL}${input}`}
+					{popularMovies.map((movie, i) => {
+						 return (
+							<Link to={`/Search/${movie.id}`} key={i}>
+							  <img
+								src={`${baseURL}${movie.poster}`}
 								alt={`movie ${i}`}
 								className={`popular-movie ${i}`}
-							/>
-						);
+							  />
+							</Link>
+						  );
 					})}
 				</div>
 			</div>
