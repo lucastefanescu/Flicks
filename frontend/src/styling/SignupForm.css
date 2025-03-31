@@ -148,3 +148,12 @@
     margin-bottom: 10px; /* Space between message and input fields */
     font-weight: bold;
 }
+
+.error-text {
+	color: #ff4d4f;
+	font-size: 0.85rem;
+	margin-top: 4px;
+	padding-left: 4px;
+	font-family: 'Playfair Display', serif !important;
+}
+
