@@ -14,6 +14,7 @@ const LoginForm = () => {
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [errors, setErrors] = useState({}); 
 	const { login } = useAuth();
 
 	const togglePasswordVisibility = () => {
@@ -22,22 +23,30 @@ const LoginForm = () => {
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
+		toast.dismiss();
+		setErrors({}); 
+
+	
+		const newErrors = {};
+		if (!username.trim()) newErrors.username = "Username is required.";
+		if (!password.trim()) newErrors.password = "Password is required.";
+		if (Object.keys(newErrors).length > 0) {
+			setErrors(newErrors);
+			return;
+		}
+
 		setLoading(true);
-		toast.dismiss(); // Clear any previous toasts
 
 		try {
-			console.log("🔍 Attempting login with:", { username, password });
-
 			const response = await axios.post("http://127.0.0.1:8000/auth/login", {
 				username,
 				password,
 			});
 
-			console.log("✅ API Response:", response.data); // Debugging API response
-			// Extract token correctly
 			const token = response.data.token;
 			const userId = response.data.user_id;
 			const firstLogin = response.data.firstLogin;
+
 			if (token) {
 				login(token, userId, firstLogin);
 				toast.success("Login successful!");
@@ -51,8 +60,7 @@ const LoginForm = () => {
 				toast.error("Login successful, but no token received.");
 			}
 		} catch (error) {
-			console.error("❌ Login Error Response:", error.response);
-			console.error("⚠️ Full Error:", error);
+			console.error("Login error:", error);
 			if (error.response) {
 				toast.error(error.response.data.detail || "Invalid login credentials.");
 			} else {
@@ -66,35 +74,41 @@ const LoginForm = () => {
 	return (
 		<div className="logincontainer login-container">
 			<div className="loginwrapper login-wrapper">
-				<form onSubmit={handleLogin}>
+				<form onSubmit={handleLogin} noValidate> 
 					<img src={logo} alt="App Logo" width="100" />
 					<h1 className="loginformtitle login">Login</h1>
 
 					{message && <p className="message">{message}</p>}
 
 					<div className="input-box">
-						<input
-							type="text"
-							placeholder="Username"
-							value={username}
-							onChange={(e) => setUsername(e.target.value)}
-							required
-						/>
-						<FaUser className="icon" />
+						<div className="input-box-inner">
+							<input
+								type="text"
+								placeholder="Username"
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
+							/>
+							<FaUser className="icon" />
+						</div>
+						{errors.username && <p className="error-text">{errors.username}</p>} 
 					</div>
 
+
 					<div className="input-box">
-						<input
-							type={passwordVisible ? "text" : "password"}
-							placeholder="Password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-						/>
-						<span className="toggle-icon" onClick={togglePasswordVisibility}>
-							{passwordVisible ? <FaEye /> : <FaEyeSlash />}
-						</span>
+						<div className="input-box-inner">
+							<input
+								type={passwordVisible ? "text" : "password"}
+								placeholder="Password"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+							<span className="toggle-icon" onClick={togglePasswordVisibility}>
+								{passwordVisible ? <FaEye /> : <FaEyeSlash />}
+							</span>
+						</div>
+						{errors.password && <p className="error-text">{errors.password}</p>} 
 					</div>
+
 
 					<div className="logintext remember-forgot">
 						<label>
