@@ -38,3 +38,95 @@
 	font-family: Playfair Display;
 	font-weight: 400;
 }
+
+
+.carousel-wrapper {
+	width: 100%;
+	max-width: 1200px; 
+	margin: 0 auto; 
+	padding: 20px 0; 
+	background-color: #f8f8f8;
+	border-radius: 10px; 
+}
+
+h2 {
+	text-align: center; 
+	font-size: 24px;
+	font-weight: bold;
+	margin-top: 20px;
+	color: #333; 
+}
+
+.carousel {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 20px; 
+	overflow: hidden;
+	padding: 10px; 
+}
+
+.carousel-item {
+	object-fit: cover; 
+	border-radius: 8px;
+	transition: transform 0.3s ease-in-out;
+	max-height: 200px;
+	width: 100%; 
+	cursor: pointer;
+}
+
+.carousel-item:hover {
+	transform: scale(1.05); 
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+}
+
+.carousel.ratings {
+	background-color: #dc143c;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.carousel-item.rating {
+	border: 2px solid #ffd700;
+	transition: transform 0.3s ease-in-out, border 0.3s ease-in-out;
+}
+
+.carousel-item.rating:hover {
+	transform: scale(1.1);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.carousel.recommendations {
+	background-color: #fff3e0;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.carousel-item.recommendations {
+	border: 2px solid #dc143c;
+	transition: transform 0.3s ease-in-out, border 0.3s ease-in-out;
+}
+
+.carousel-item.recommendations:hover {
+	transform: scale(1.1); 
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+	.carousel-wrapper {
+		padding: 10px 0; 
+	}
+
+	.carousel-item {
+		max-height: 150px;
+	}
+
+	.carousel {
+		gap: 15px;
+	}
+
+	h2 {
+		font-size: 20px;
+	}
+}
+  

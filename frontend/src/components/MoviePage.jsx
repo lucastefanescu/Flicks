@@ -117,7 +117,7 @@ const MoviePage = ({ movieName = "default", year = "default" }) => {
 	const sendRatingToBackend = async (newRating) => {
 		try {
 			const ratingData = {
-				userId: userId,
+				//userId: userId,
 				movieId: id,
 				rating: newRating,
 				title: movie.title,
@@ -192,7 +192,6 @@ const MoviePage = ({ movieName = "default", year = "default" }) => {
 						<h3>Trailer</h3>
 						{movie.trailerUrl ? (
 							<iframe
-								width="60%"
 								height="315"
 								frameBorder="0"
 								src={movie.trailerUrl}
@@ -213,7 +212,6 @@ const MoviePage = ({ movieName = "default", year = "default" }) => {
 						loading="lazy"
 						alt="Poster"
 					></img>
-					<button className="watchlist-button">Add to watchlist</button>
 				</div>
 			</div>
 		</div>
