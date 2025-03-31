@@ -5,7 +5,6 @@ import "../../styling/SignupForm.css";
 import logo from "../../pictures/flick_logo.png";
 import toast from "react-hot-toast";
 
-
 const SignupForm = () => {
 	const navigate = useNavigate();
 
@@ -14,12 +13,26 @@ const SignupForm = () => {
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [errors, setErrors] = useState({});
 
 	const handleSignup = async (e) => {
 		e.preventDefault();
-		setMessage("");
+		setErrors({});
+
+		// Manual validation
+		const newErrors = {};
+		if (!firstName.trim()) newErrors.firstName = "First name is required.";
+		if (!lastName.trim()) newErrors.lastName = "Last name is required.";
+		if (!email.trim()) newErrors.email = "Email is required.";
+		if (!username.trim()) newErrors.username = "Username is required.";
+		if (!password.trim()) newErrors.password = "Password is required.";
+
+		if (Object.keys(newErrors).length > 0) {
+			setErrors(newErrors);
+			return;
+		}
+
 		setLoading(true);
 		try {
 			await axios.post("http://127.0.0.1:8000/users/signup", {
@@ -30,7 +43,7 @@ const SignupForm = () => {
 				password,
 			});
 			toast.success("Account created successfully!");
-			setTimeout(() => navigate("/Login"), 3000);	
+			setTimeout(() => navigate("/Login"), 3000);
 		} catch (error) {
 			toast.error(
 				error.response?.data?.detail || "Error signing up. Try again."
@@ -44,12 +57,10 @@ const SignupForm = () => {
 	return (
 		<div className="login-container">
 			<div className="loginwrapper signup-wrapper">
-				<form onSubmit={handleSignup}>
+				<form onSubmit={handleSignup} noValidate>
 					<img src={logo} alt="App Logo" width="100" />
 
 					<h1 className="loginformtitle signup">Sign Up</h1>
-
-					{message && <p className="message-top">{message}</p>}
 
 					<div className="input-box">
 						<input
@@ -57,8 +68,8 @@ const SignupForm = () => {
 							placeholder="First Name"
 							value={firstName}
 							onChange={(e) => setFirstName(e.target.value)}
-							required
 						/>
+						{errors.firstName && <p className="error-text">{errors.firstName}</p>}
 					</div>
 
 					<div className="input-box">
@@ -67,8 +78,8 @@ const SignupForm = () => {
 							placeholder="Last Name"
 							value={lastName}
 							onChange={(e) => setLastName(e.target.value)}
-							required
 						/>
+						{errors.lastName && <p className="error-text">{errors.lastName}</p>}
 					</div>
 
 					<div className="input-box">
@@ -77,8 +88,8 @@ const SignupForm = () => {
 							placeholder="Email"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
-							required
 						/>
+						{errors.email && <p className="error-text">{errors.email}</p>}
 					</div>
 
 					<div className="input-box">
@@ -87,8 +98,8 @@ const SignupForm = () => {
 							placeholder="Username"
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
-							required
 						/>
+						{errors.username && <p className="error-text">{errors.username}</p>}
 					</div>
 
 					<div className="input-box">
@@ -97,8 +108,8 @@ const SignupForm = () => {
 							placeholder="Password"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
-							required
 						/>
+						{errors.password && <p className="error-text">{errors.password}</p>}
 					</div>
 
 					<button type="submit" disabled={loading}>
