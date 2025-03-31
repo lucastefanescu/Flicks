@@ -125,9 +125,9 @@ async def getRatings(user_id: str):
 # Get user name
 @router.get("/{user_id}/getName")
 async def getName(user_id: str):
-    user_name = int(user_id)
+    user_id = int(user_id)
     user = await users_collection.find_one({"_id": user_id})
     if not user:
         raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found")
     
-    return {"name": user.get("name", "")}
+    return {"name": user.get("firstName", "")}
