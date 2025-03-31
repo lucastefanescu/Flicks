@@ -22,7 +22,7 @@ const ForgotPasswordForm = () => {
 			);
 
 			if (response.status === 200) {
-				toast.sucess("Password reset link has been sent to your email.");
+				toast.success("Password reset link has been sent to your email.");
 			}
 		} catch (error) {
 			toast.error(error.response?.data?.detail || "Error sending reset email.");
