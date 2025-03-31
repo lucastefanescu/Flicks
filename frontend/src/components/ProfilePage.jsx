@@ -54,8 +54,6 @@ const ProfilePage = () => {
 				const resultArray = Object.entries(result).flat();
 				const resultQueries = resultArray[1] || [];
 
-				console.log(resultQueries);
-
 				const movies = await Promise.all(
 					resultQueries.map(async (id) => {
 						const response_tmdb = await fetch(
@@ -86,7 +84,7 @@ const ProfilePage = () => {
 		async function fetchData() {
 			try {
 				const response = await fetch(
-					"http://localhost:8000/Recommendations/getCosRecommendations",
+					"http://localhost:8000/Recommendations/recommendForUser",
 					{
 						method: "POST",
 						headers: {
@@ -103,8 +101,8 @@ const ProfilePage = () => {
 				}
 				const result = await response.json();
 				const queryIds = Object.entries(result).flat();
-				const finalQueryIds = queryIds[1];
-
+				const finalQueryIds = queryIds[3];
+				console.log("final QUERY IDS" + finalQueryIds);
 				const movies = await Promise.all(
 					finalQueryIds.map(async (id) => {
 						const response2 = await fetch(
@@ -138,7 +136,7 @@ const ProfilePage = () => {
 			<Navbar></Navbar>
 			<h1>Hi... Name</h1>
 			<h2>Your Rated Movies</h2>
-			<div className="carousel-wrapper 1">
+			<div className="carousel-wrapper ratings">
 				<Carousel
 					responsive={responsive}
 					className={"carousel ratings"}
@@ -157,12 +155,11 @@ const ProfilePage = () => {
 			</div>
 
 			<h2>Recommended For You</h2>
-			<div className="carousel-wrapper 2">
+			<div className="carousel-wrapper recommendations">
 				<Carousel
 					responsive={responsive}
 					className={"carousel recommendations"}
 					itemClass={"profile-wrapper recommendations"}
-					infinite={true}
 				>
 					{Recommendations.map((value, i) => {
 						return (

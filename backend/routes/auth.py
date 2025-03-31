@@ -36,11 +36,17 @@ async def login(user: LoginModel):
     if not db_user or not verifyPassword(user.password, db_user["password"]):
         raise HTTPException(status_code=400, detail="Invalid credentials")
 
-    # Create JWT Token
     token = create_jwt_token({"sub": db_user["username"], "id": str(db_user["_id"])})
-
-    return {"message": "Login successful", "token": token, "user_id": str(db_user["_id"]), "firstLogin": str(db_user["firstLogin"])}
-
+    
+    # Safely get firstLogin with a default
+    first_login_value = db_user.get("firstLogin", 0)
+    
+    return {
+        "message": "Login successful",  
+        "token": token,
+        "user_id": str(db_user["_id"]),
+        "firstLogin": str(first_login_value)
+    }
 @router.get("/protected")
 async def protected_route(token: str = Depends(oauth2_scheme)):
     try:

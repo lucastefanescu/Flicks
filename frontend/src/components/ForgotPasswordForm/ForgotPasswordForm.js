@@ -4,11 +4,13 @@ import "../../styling/ForgotPasswordForm.css";
 import { MdEmail } from "react-icons/md";
 import logo from "../../pictures/flick_logo.png";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordForm = () => {
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
 
 	const handleForgotPassword = async (e) => {
 		e.preventDefault();
@@ -22,7 +24,8 @@ const ForgotPasswordForm = () => {
 			);
 
 			if (response.status === 200) {
-				toast.sucess("Password reset link has been sent to your email.");
+				toast.success("Password reset link has been sent to your email.");
+				navigate("/");
 			}
 		} catch (error) {
 			toast.error(error.response?.data?.detail || "Error sending reset email.");

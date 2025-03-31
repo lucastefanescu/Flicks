@@ -11,9 +11,11 @@ from backend.routes import auth, users
 from backend.database import recommendation_collection
 import faiss
 import numpy as np
-from backend import globals
+from backend import global_vars
 import json
 from backend.database import db
+import pickle
+import surprise
 
 INDEX_PATH = "./faiss.index"
 
@@ -22,17 +24,25 @@ class Rating(BaseModel):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    with open("svd_model.pkl", "rb") as f:
+        svd = pickle.load(f)
+        global_vars.SVD = svd
+
+    with open("trainset.pkl", "rb") as f:
+        trainset = pickle.load(f)
+        global_vars.trainset = trainset
+
     if not os.path.exists(INDEX_PATH):
         vectors = await getAllVectors()
         faiss_index = build_faiss_index(vectors)
         faiss.write_index(faiss_index, INDEX_PATH)
 
         with open("movie_ids.json", "w") as f:
-            json.dump(globals.movieId_list, f)
+            json.dump(global_vars.movieId_list, f)
     else:
         faiss_index = faiss.read_index(INDEX_PATH)
         with open("movie_ids.json", "r") as f:
-            globals.movieId_list = json.load(f)
+            global_vars.movieId_list = json.load(f)
     yield
 
 app = FastAPI(lifespan=lifespan)
@@ -42,7 +52,7 @@ async def getAllVectors():
     async for doc in recommendation_collection.find({}, {"cos_vector": 1, "movieId": 1}):
         movie_dict[doc["movieId"]] = doc["cos_vector"]
 
-    globals.movieId_list = list(movie_dict.keys())
+    global_vars.movieId_list = list(movie_dict.keys())
     vector_list = list(movie_dict.values())
 
     return np.array(vector_list, dtype=np.float32)

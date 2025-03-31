@@ -25,14 +25,6 @@ function Navbar({ handleLoggedInCheck, handleSignup, handleLogin }) {
 					<Link to="/Profile" className="nav-button-all home-button-all">
 						Profile
 					</Link>
-					{/* 
-					<Link to="/SignUp" className="nav-button-all about-button">
-						Sign Up
-					</Link>
-					<Link to="/Login" className="nav-button-all login-button">
-						Log in
-					</Link>
-					*/}
 					<Link to="/Search" className="nav-button-all search-button">
 						Search
 					</Link>

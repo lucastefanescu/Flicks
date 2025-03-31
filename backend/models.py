@@ -41,7 +41,7 @@ class UserModel(BaseModel):
 class LoginModel(BaseModel):
     username: str = Field(...)
     password: str = Field(...)
-
+    
 # Model for forgot password request
 class ForgotPasswordModel(BaseModel):
     email: EmailStr

@@ -21,6 +21,9 @@
 .Profile-Container > h2 {
 	margin: 2.3em 0 1rem 2rem;
 }
+.carousel-wrapper .recommendations {
+	margin-bottom: 1rem;
+}
 /*
 	styling/typography
 */
