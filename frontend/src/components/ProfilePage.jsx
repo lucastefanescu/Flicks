@@ -39,7 +39,27 @@ const poster_prefix = "https://image.tmdb.org/t/p/w500";
 const ProfilePage = () => {
 	const [ratings, setRatings] = useState([]);
 	const [Recommendations, setRecommendations] = useState([]);
+	const [name, setName] = useState('');
 	const { userId } = useAuth();
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+			  const nameResponse = await fetch(
+				`http://localhost:8000/users/${userId}/getName`
+			  );
+			  if (!nameResponse.ok) {
+				console.log("Error retrieving name for user");
+			  }
+			  const nameResult = await nameResponse.json();
+			  setName(nameResult.name);  
+			} catch (error) {
+				console.log("Error fetching user data: " + error);
+			}
+		}
+
+		fetchData();
+	  }, [userId]);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -135,8 +155,7 @@ const ProfilePage = () => {
 
 	return (
 		<div className="Profile-Container">
-			<Navbar></Navbar>
-			<h1>Hi... Name</h1>
+			<h1>Hello, {name}</h1>
 			<h2>Your Rated Movies</h2>
 			<div className="carousel-wrapper 1">
 				<Carousel
