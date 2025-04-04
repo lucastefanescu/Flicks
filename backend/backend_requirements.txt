@@ -1,0 +1,16 @@
+aiosmtplib
+bcrypt
+datetime
+dotenv
+faiss-cpu
+fastapi
+jwt
+motor
+numpy
+pydantic[email]
+pymongo
+pandas
+python-dotenv
+scikit-learn
+scikit-surprise
+uvicorn[standard]

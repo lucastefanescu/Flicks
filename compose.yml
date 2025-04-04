@@ -1,0 +1,44 @@
+services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: frontend.dockerfile
+    ports: 
+      - "3000:80"
+    depends_on:
+      - backend
+
+  backend:
+    build: 
+      dockerfile: backend.dockerfile
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - cronjob
+      - mongodb
+    env_file:
+      - .env
+    environment:
+      - MONGODB_URL=${MONGODB_URL}
+      - GMAIL_USERNAME=${GMAIL_USERNAME}
+      - GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports: 
+      - "27017:27017"
+    environment:
+      - GMAIL_USERNAME=${GMAIL_USERNAME}
+      - GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
+    env_file:
+      - .env
+
+  cronjob:
+    build: 
+      context: ./backend
+      dockerfile: cronjob.dockerfile
+    environment:
+      - MONGODB_URL=${MONGODB_URL}
+    env_file:
+      - .env
