@@ -91,7 +91,7 @@ function MoviePreferencesModal() {
 	const [olderRecent, setOlderRecent] = useState(-1);
 	const { userId, modalComplete } = useAuth();
 	const navigate = useNavigate();
-
+	const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 	const handleMoviesChange = useCallback(async (values) => {
 		if (Array.isArray(values)) {
 			setMovies(values);
@@ -105,7 +105,7 @@ function MoviePreferencesModal() {
 			e.preventDefault();
 			try {
 				const response = await fetch(
-					"http://localhost:8000/Recommendations/SubmitModal",
+					`${BASE_URL}/Recommendations/SubmitModal`,
 					{
 						method: "POST",
 						headers: {

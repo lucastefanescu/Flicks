@@ -7,10 +7,11 @@ SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SMTP_USERNAME = os.getenv("GMAIL_USERNAME")
 SMTP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD")
+FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 async def sendResetEmail(email: str, reset_token: str):
     #Change Link to the deployment server URL. Keep /reset-password/{reset_token} endpoint.
-    reset_link = f"http://localhost:3000/resetPassword/{reset_token}"
+    reset_link = f"{FRONTEND_URL}/resetPassword/{reset_token}"
 
     message = EmailMessage()
     message["From"] = SMTP_USERNAME

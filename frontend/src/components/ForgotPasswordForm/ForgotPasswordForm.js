@@ -11,7 +11,7 @@ const ForgotPasswordForm = () => {
 	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
-
+	const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 	const handleForgotPassword = async (e) => {
 		e.preventDefault();
 		setMessage("");
@@ -19,7 +19,7 @@ const ForgotPasswordForm = () => {
 
 		try {
 			const response = await axios.post(
-				"http://127.0.0.1:8000/auth/forgot-password",
+				`${BASE_URL}/auth/forgot-password`,
 				{ email }
 			);
 

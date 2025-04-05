@@ -15,7 +15,7 @@ const MoviePage = ({ movieName = "default", year = "default" }) => {
 	const { id } = useParams();
 	const { userId } = useAuth();
 	const [rating, setRating] = useState(null);
-
+	const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 	useEffect(() => {
 		console.log("useEffect triggered with:", movieName, year);
 		console.log("Backdrop Path:", movie?.backdropPath);
@@ -126,7 +126,7 @@ const MoviePage = ({ movieName = "default", year = "default" }) => {
 			};
 
 			const response = await axios.post(
-				`http://localhost:8000/users/${userId}/ratings`,
+				`${BASE_URL}/users/${userId}/ratings`,
 				ratingData
 			);
 			toast.success("Rating submitted successfully:", response.data);

@@ -7,9 +7,12 @@ import json
 from backend.database import recommendation_collection, users_collection
 import numpy as np
 import faiss
+import os
 
 async def main():
-    client = AsyncIOMotorClient("mongodb://localhost:27017")
+    
+    MONGODB_URL = os.getenv("MONGODB_URL")
+    client = AsyncIOMotorClient(MONGODB_URL)
     db = client["mydatabase"]
 
     # Fetch userId, movieId, rating

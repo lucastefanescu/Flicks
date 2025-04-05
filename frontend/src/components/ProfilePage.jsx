@@ -25,7 +25,7 @@ const responsive = {
 };
 
 const API_ACESS_TOKEN = process.env.REACT_APP_API_ACCESS_TOKEN;
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const options = {
 	method: "GET",
 	headers: {
@@ -46,7 +46,7 @@ const ProfilePage = () => {
 		async function fetchData() {
 			try {
 				const nameResponse = await fetch(
-					`http://localhost:8000/users/${userId}/getName`
+					`${BASE_URL}/users/${userId}/getName`
 				);
 				const resultName = await nameResponse.json();
 				setName(resultName.name);
@@ -55,7 +55,7 @@ const ProfilePage = () => {
 			}
 			try {
 				const response = await fetch(
-					`http://localhost:8000/users/${userId}/getRatings`
+					`${BASE_URL}/users/${userId}/getRatings`
 				);
 				if (!response.ok) {
 					console.log("error retrieving ratings for user");
@@ -94,7 +94,7 @@ const ProfilePage = () => {
 		async function fetchData() {
 			try {
 				const response = await fetch(
-					"http://localhost:8000/Recommendations/recommendForUser",
+					`${BASE_URL}/Recommendations/recommendForUser`,
 					{
 						method: "POST",
 						headers: {

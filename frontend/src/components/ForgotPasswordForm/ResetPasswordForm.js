@@ -15,6 +15,7 @@ const ResetPasswordForm = () => {
 	const [showPassword, setPasswordVisible] = useState(false);
 	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
+	const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 	const togglePasswordVisibility = () => {
 		setPasswordVisible(!showPassword);
@@ -33,7 +34,7 @@ const ResetPasswordForm = () => {
 		try {
 			//change url based on deployment link
 			const response = await axios.post(
-				`http://127.0.0.1:8000/auth/reset-password/${token}`,
+				`${BASE_URL}/auth/reset-password/${token}`,
 				{ new_password: newPassword },
 				{ headers: { "Content-Type": "application/json" } }
 			);

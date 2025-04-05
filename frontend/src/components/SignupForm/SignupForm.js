@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 
 const SignupForm = () => {
 	const navigate = useNavigate();
-
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
@@ -15,6 +14,7 @@ const SignupForm = () => {
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [errors, setErrors] = useState({});
+	const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 	const handleSignup = async (e) => {
 		e.preventDefault();
@@ -32,10 +32,9 @@ const SignupForm = () => {
 			setErrors(newErrors);
 			return;
 		}
-
 		setLoading(true);
 		try {
-			await axios.post("http://127.0.0.1:8000/users/signup", {
+			await axios.post(`${BASE_URL}/users/signup`, {
 				firstName,
 				lastName,
 				email,

@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(localStorage.getItem("token"));
 	const [userId, setUserId] = useState(localStorage.getItem("userId"));
+	const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 	const [firstLogin, setFirstLogin] = useState(
 		localStorage.getItem("firstLogin")
 	);
@@ -18,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 			if (token) {
 				try {
 					const response = await axios.get(
-						"http://localhost:8000/auth/protected",
+						`${BASE_URL}/auth/protected`,
 						{
 							// Corrected backend URL
 							headers: { Authorization: `Bearer ${token}` },

@@ -63,17 +63,18 @@ def build_faiss_index(np_vectors):
     index.add(np_vectors)
 
     return index
-
+# Load environment variables
+load_dotenv()
+origins = os.getenv("FRONTEND_URL")
 # Allow frontend (React) to communicate with FastAPI
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3000/Search/238"],  # Allow frontend based on frontend URL
+    allow_origins=[origins, origins + "/Search/238"],  # Allow frontend based on frontend URL
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
 )
-# Load environment variables
-load_dotenv()
+
 
 # Include Routes
 app.include_router(recommendersystem.router, prefix="/Recommendations")

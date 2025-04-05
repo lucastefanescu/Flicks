@@ -16,7 +16,7 @@ const LoginForm = () => {
 	const [loading, setLoading] = useState(false);
 	const [errors, setErrors] = useState({}); 
 	const { login } = useAuth();
-
+	const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 	const togglePasswordVisibility = () => {
 		setPasswordVisible(!passwordVisible);
 	};
@@ -38,7 +38,7 @@ const LoginForm = () => {
 		setLoading(true);
 
 		try {
-			const response = await axios.post("http://127.0.0.1:8000/auth/login", {
+			const response = await axios.post(`${BASE_URL}/auth/login`, {
 				username,
 				password,
 			});

@@ -7,6 +7,10 @@ services:
       - "3000:80"
     depends_on:
       - backend
+    env_file:
+      - .env
+    environment:
+      - REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
 
   backend:
     build: 
@@ -15,28 +19,19 @@ services:
       - "8000:8000"
     depends_on:
       - cronjob
-      - mongodb
     env_file:
       - .env
     environment:
       - MONGODB_URL=${MONGODB_URL}
       - GMAIL_USERNAME=${GMAIL_USERNAME}
       - GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
-
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    ports: 
-      - "27017:27017"
-    environment:
-      - GMAIL_USERNAME=${GMAIL_USERNAME}
-      - GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
-    env_file:
-      - .env
+      - FRONTEND_URL=${FRONTEND_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ALGORITHM=${JWT_ALGORITHM}
+      - JWT_EXPIRATION_MINUTES=${JWT_EXPIRATION_MINUTES}
 
   cronjob:
     build: 
-      context: ./backend
       dockerfile: cronjob.dockerfile
     environment:
       - MONGODB_URL=${MONGODB_URL}
