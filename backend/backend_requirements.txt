@@ -4,7 +4,7 @@ datetime
 dotenv
 faiss-cpu
 fastapi
-jwt
+PyJWT
 motor
 numpy
 pydantic[email]
